@@ -28,36 +28,5 @@ const props = defineProps<{
 console.log('CategoryTree received category:', props.category);
 </script>
 
-<style scoped>
-.category-list {
-  list-style: none;
-}
-
-.category-item {
-  margin-bottom: 5px;
-}
-
-.category-link {
-  display: block;
-  padding: 5px 0;
-  color: var(--dark-color);
-  transition: color 0.3s ease;
-  font-weight: 500;
-}
-
-.category-link:hover {
-  color: var(--accent-color);
-}
-
-.subcategories {
-  margin-left: 15px;
-}
-
-.subcategory-list {
-  list-style: none;
-}
-
-.subcategory-item {
-  margin-top: 2px;
-}
-</style>
+<!-- CategoryTree component now uses global CSS classes -->
+<!-- All styles are moved to assets/css/components/sidebar.css -->

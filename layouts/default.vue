@@ -15,26 +15,5 @@
 // Layout components are imported automatically
 </script>
 
-<style scoped>
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-content {
-  display: flex;
-  flex: 1;
-}
-
-.content {
-  flex: 1;
-  padding: 20px;
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    flex-direction: column;
-  }
-}
-</style>
+<!-- Layout now uses global CSS classes -->
+<!-- All styles are moved to assets/css/layout.css -->

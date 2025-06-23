@@ -1,0 +1,61 @@
+/* Sidebar Component Styles */
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid var(--border-color);
+  padding: 20px;
+  height: 100%;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Category Tree Styles */
+.category-tree {
+  /* Wrapper for category tree */
+}
+
+.category-list {
+  list-style: none;
+}
+
+.category-item {
+  margin-bottom: 5px;
+}
+
+.category-link {
+  display: block;
+  padding: 5px 0;
+  color: var(--dark-color);
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.category-link:hover {
+  color: var(--accent-color);
+}
+
+.subcategories {
+  margin-left: 15px;
+}
+
+.subcategory-list {
+  list-style: none;
+}
+
+.subcategory-item {
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
