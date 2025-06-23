@@ -7,6 +7,14 @@
   top: 0;
   z-index: 100;
   padding: var(--spacing-md) 0;
+  width: 100%;
+}
+
+/* Override container max-width for header */
+.header .container {
+  max-width: 100%;
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
 }
 
 .header-content {
@@ -14,12 +22,14 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .logo {
   font-size: var(--font-size-xl);
   font-weight: 700;
   flex: 0 0 auto;
+  margin-right: auto;
 }
 
 .logo a {
@@ -33,8 +43,11 @@
 .main-nav {
   display: flex;
   justify-content: center;
-  flex: 1;
+  flex: 0 1 auto;
   margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-list {
@@ -109,6 +122,7 @@
   position: relative;
   width: 250px;
   flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .search-bar form {
@@ -149,6 +163,11 @@
 
 /* Responsive header */
 @media (max-width: 992px) {
+  .header .container {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
   .header-content {
     flex-direction: column;
     align-items: center;
@@ -156,16 +175,20 @@
 
   .logo {
     margin-bottom: var(--spacing-md);
+    margin-right: 0;
   }
 
   .main-nav {
     margin: var(--spacing-md) 0;
     width: 100%;
+    position: static;
+    transform: none;
   }
 
   .search-bar {
     width: 100%;
     margin-top: var(--spacing-md);
+    margin-left: 0;
   }
 }
 
