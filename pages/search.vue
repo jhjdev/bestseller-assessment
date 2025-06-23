@@ -53,47 +53,5 @@ useHead({
 });
 </script>
 
-<style scoped>
-.search-header {
-  margin-bottom: 30px;
-}
-
-.search-title {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.search-query {
-  font-size: 1.1rem;
-  color: var(--secondary-color);
-  margin-bottom: 20px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.no-results, .no-query {
-  text-align: center;
-  padding: 50px 0;
-  color: var(--secondary-color);
-}
-
-.back-link {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.back-link:hover {
-  background-color: var(--accent-color);
-}
-</style>
+<!-- Search page now uses global CSS classes -->
+<!-- All styles are moved to assets/css/pages/search.css -->

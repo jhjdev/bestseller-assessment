@@ -21,27 +21,5 @@ const rootCategory = computed(() => {
 });
 </script>
 
-<style scoped>
-.sidebar {
-  width: 250px;
-  background-color: white;
-  border-right: 1px solid var(--border-color);
-  padding: 20px;
-  height: 100%;
-}
-
-.sidebar-title {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-  }
-}
-</style>
+<!-- Sidebar component now uses global CSS classes -->
+<!-- All styles are moved to assets/css/components/sidebar.css -->

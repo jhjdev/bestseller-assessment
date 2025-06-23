@@ -2,7 +2,21 @@
 export default {
   devtools: { enabled: true },
   modules: ['@pinia/nuxt'],
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/global.css',
+    '~/assets/css/layout.css',
+    '~/assets/css/components/header.css',
+    '~/assets/css/components/product-card.css',
+    '~/assets/css/components/footer.css',
+    '~/assets/css/components/sidebar.css',
+    '~/assets/css/components/promotional-spot.css',
+    '~/assets/css/pages/home.css',
+    '~/assets/css/pages/product-detail.css',
+    '~/assets/css/pages/category.css',
+    '~/assets/css/pages/search.css',
+    '~/assets/css/pages/coming-soon.css'
+  ],
   app: {
     head: {
       title: 'Fashion Store',

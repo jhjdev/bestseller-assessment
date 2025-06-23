@@ -88,40 +88,5 @@ useHead({
 });
 </script>
 
-<style scoped>
-.category-header {
-  margin-bottom: 30px;
-}
-
-.category-title {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.breadcrumbs {
-  font-size: 0.9rem;
-  color: var(--secondary-color);
-  margin-bottom: 20px;
-}
-
-.breadcrumbs a {
-  color: var(--primary-color);
-}
-
-.breadcrumb-separator {
-  margin: 0 5px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.no-products {
-  text-align: center;
-  padding: 50px 0;
-  color: var(--secondary-color);
-}
-</style>
+<!-- Category page now uses global CSS classes -->
+<!-- All styles are moved to assets/css/pages/category.css -->
