@@ -1,0 +1,50 @@
+{
+  "name": "bestseller-assessment",
+  "version": "1.0.0",
+  "description": "Fashion Store - A Vue 3 SSR application with Nuxt",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhjdev/bestseller-assessment.git"
+  },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "ssr",
+    "fashion",
+    "e-commerce"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jhjdev/bestseller-assessment/issues"
+  },
+  "homepage": "https://github.com/jhjdev/bestseller-assessment#readme",
+  "dependencies": {
+    "@nuxt/test-utils": "^3.19.1",
+    "@pinia/testing": "^1.0.2",
+    "@vue/test-utils": "^2.4.6",
+    "nuxt": "^3.17.5",
+    "pinia": "^3.0.3",
+    "vitest": "^3.2.4",
+    "vue": "^3.5.17"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.18.1",
+    "@pinia/nuxt": "^0.11.1",
+    "@types/node": "^24.0.3",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "jsdom": "^26.1.0"
+  }
+}
