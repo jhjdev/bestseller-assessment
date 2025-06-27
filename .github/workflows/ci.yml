@@ -101,12 +101,28 @@ jobs:
       - name: 📥 Install dependencies
         run: npm ci
 
+      - name: 🔧 Prepare Nuxt environment
+        run: |
+          echo "Preparing Nuxt environment..."
+          npx nuxt prepare
+          echo "✅ Nuxt preparation completed"
+
       - name: 🏗️ Generate static site
         run: |
-          echo "Starting static site generation..."
+          echo "=== Starting Static Site Generation ==="
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Current directory: $(pwd)"
+          echo "Environment: $NODE_ENV"
+          
+          echo "Running npm run generate..."
           npm run generate
+          
+          echo "✅ Static site generation completed"
         env:
           NODE_ENV: production
+          MONGODB_URI: 'dummy://localhost:27017'
+          MONGODB_DB_NAME: 'dummy'
 
       - name: 🔍 Verify build output exists
         run: |
