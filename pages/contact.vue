@@ -4,7 +4,10 @@
       <h1>Contact Us</h1>
       <div class="coming-soon-content">
         <p>Our contact page is coming soon!</p>
-        <p>In the meantime, you can reach us at <a href="mailto:support@fashionstore.com">support@fashionstore.com</a></p>
+        <p>
+          In the meantime, you can reach us at
+          <a href="mailto:support@fashionstore.com">support@fashionstore.com</a>
+        </p>
         <NuxtLink to="/" class="back-link">Back to Home</NuxtLink>
       </div>
     </div>

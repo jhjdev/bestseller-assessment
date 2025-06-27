@@ -2,9 +2,34 @@
   <div class="app-layout">
     <TheHeader />
     <div class="main-content">
-      <TheSidebar />
+      <ErrorBoundary>
+        <Suspense>
+          <template #default>
+            <TheSidebar />
+          </template>
+          <template #fallback>
+            <div class="sidebar loading-sidebar">
+              <h2 class="sidebar-title">Categories</h2>
+              <div class="loading">Loading categories...</div>
+            </div>
+          </template>
+        </Suspense>
+      </ErrorBoundary>
+
       <main class="content">
-        <slot />
+        <ErrorBoundary>
+          <Suspense>
+            <template #default>
+              <slot />
+            </template>
+            <template #fallback>
+              <div class="loading-page">
+                <div class="loading-spinner"></div>
+                <p>Loading content...</p>
+              </div>
+            </template>
+          </Suspense>
+        </ErrorBoundary>
       </main>
     </div>
     <TheFooter />

@@ -26,10 +26,7 @@
                 :class="{ active: selectedImageIndex === index }"
                 @click="selectImage(index)"
               >
-                <img
-                  :src="image"
-                  :alt="`${productName} - Image ${index + 1}`"
-                />
+                <img :src="image" :alt="`${productName} - Image ${index + 1}`" />
               </div>
             </div>
           </div>
@@ -48,9 +45,7 @@
                     :class="{ active: selectedVariantIndex === -1 }"
                     @click="selectVariant(-1)"
                   >
-                    <span class="color-name">{{
-                      product.color || 'Default'
-                    }}</span>
+                    <span class="color-name">{{ product.color || 'Default' }}</span>
                   </div>
                   <div
                     v-for="(variant, index) in product.variant"
@@ -59,9 +54,7 @@
                     :class="{ active: selectedVariantIndex === index }"
                     @click="selectVariant(index)"
                   >
-                    <span class="color-name">{{
-                      variant.color || 'Option'
-                    }}</span>
+                    <span class="color-name">{{ variant.color || 'Option' }}</span>
                   </div>
                 </div>
               </div>
@@ -87,23 +80,14 @@
 
             <div class="product-actions">
               <div class="quantity-selector">
-                <button
-                  @click="decreaseQuantity"
-                  :disabled="quantity <= 1"
-                  class="quantity-btn"
-                >
+                <button @click="decreaseQuantity" :disabled="quantity <= 1" class="quantity-btn">
                   -
                 </button>
                 <span class="quantity">{{ quantity }}</span>
-                <button @click="increaseQuantity" class="quantity-btn">
-                  +
-                </button>
+                <button @click="increaseQuantity" class="quantity-btn">+</button>
               </div>
 
-              <button
-                class="btn btn-primary add-to-cart-btn"
-                :disabled="!isInStock"
-              >
+              <button class="btn btn-primary add-to-cart-btn" :disabled="!isInStock">
                 {{ isInStock ? 'Add to Cart' : 'Out of Stock' }}
               </button>
             </div>
@@ -116,9 +100,9 @@
             <div class="product-description">
               <h3 class="description-title">Product Details</h3>
               <p>
-                This {{ productName }} from {{ product.brand }} is a stylish
-                addition to your wardrobe. Perfect for any occasion, it features
-                premium quality materials and expert craftsmanship.
+                This {{ productName }} from {{ product.brand }} is a stylish addition to your
+                wardrobe. Perfect for any occasion, it features premium quality materials and expert
+                craftsmanship.
               </p>
             </div>
           </div>
@@ -127,10 +111,7 @@
 
       <div v-else class="product-not-found">
         <h2>Product Not Found</h2>
-        <p>
-          Sorry, the product you are looking for does not exist or has been
-          removed.
-        </p>
+        <p>Sorry, the product you are looking for does not exist or has been removed.</p>
         <NuxtLink to="/" class="btn btn-primary">Back to Home</NuxtLink>
       </div>
     </div>
@@ -139,7 +120,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useProductStore } from '~/stores/product';
+import { useProductStore } from '~/stores/products';
 import { useImagePlaceholder } from '~/composables/useImagePlaceholder';
 import type { Product, Category } from '~/types';
 
@@ -160,11 +141,7 @@ const productName = computed(() => {
 
 // Get the main category for this product
 const mainCategory = computed(() => {
-  if (
-    !product.value ||
-    !product.value.categories ||
-    product.value.categories.length === 0
-  ) {
+  if (!product.value || !product.value.categories || product.value.categories.length === 0) {
     return null;
   }
 
@@ -184,11 +161,7 @@ const mainCategory = computed(() => {
 // Image gallery
 const selectedImageIndex = ref(0);
 const selectedImage = computed(() => {
-  if (
-    !product.value ||
-    !product.value.images ||
-    product.value.images.length === 0
-  ) {
+  if (!product.value || !product.value.images || product.value.images.length === 0) {
     return placeholderImage;
   }
 
@@ -232,11 +205,7 @@ const selectVariant = (index: number) => {
   selectedSize.value = ''; // Reset size selection when variant changes
 
   // If this variant has its own images, update the selected image
-  if (
-    index !== -1 &&
-    currentVariant.value?.images &&
-    currentVariant.value.images.length > 0
-  ) {
+  if (index !== -1 && currentVariant.value?.images && currentVariant.value.images.length > 0) {
     selectedImageIndex.value = 0; // Reset to first image of the variant
   }
 };
@@ -280,8 +249,7 @@ const isInStock = computed(() => {
   const variant = currentVariant.value;
   return (
     variant &&
-    (variant.stock === 'Unlimited' ||
-      (typeof variant.stock === 'number' && variant.stock > 0))
+    (variant.stock === 'Unlimited' || (typeof variant.stock === 'number' && variant.stock > 0))
   );
 });
 
@@ -296,9 +264,7 @@ const formatPrice = (price: number) => {
 
 // Set page metadata
 useHead({
-  title: product.value
-    ? `${productName.value} - ${product.value.brand}`
-    : 'Product Not Found',
+  title: product.value ? `${productName.value} - ${product.value.brand}` : 'Product Not Found',
   meta: [
     {
       name: 'description',
@@ -309,6 +275,3 @@ useHead({
   ],
 });
 </script>
-
-<!-- Product detail page now uses global CSS classes -->
-<!-- All styles are moved to assets/css/pages/product-detail.css -->

@@ -18,7 +18,7 @@
           </template>
         </div>
       </div>
-      
+
       <div v-else class="no-products">
         <p>No products found in this category.</p>
       </div>
@@ -27,15 +27,22 @@
 </template>
 
 <script setup lang="ts">
-import { useProductStore } from '~/stores/product';
+import { computed } from 'vue';
+// Remove incorrect imports - Nuxt auto-imports these
+// import { useRoute, useHead } from 'vue-router';
+import { useProductStore } from '~/stores/products';
 import type { Product, PromotionalSpot } from '~/types';
 
-const route = useRoute();
+const route = useRoute(); // Let Nuxt auto-import handle this
 const productStore = useProductStore();
 const categoryId = computed(() => route.params.id as string);
 
-// Set the selected category in the store
-productStore.setSelectedCategory(categoryId.value);
+// Filter products by category ID
+const products = computed(() => {
+  return productStore.products.filter(
+    (product) => product.categories && product.categories.includes(categoryId.value)
+  );
+});
 
 // Get the category details
 const category = computed(() => {
@@ -44,49 +51,45 @@ const category = computed(() => {
 
 // Get the category name
 const categoryName = computed(() => {
-  return category.value?.name.en || 'Category';
-});
-
-// Get products for this category
-const products = computed(() => {
-  return productStore.filteredProducts;
+  return productStore.getCategoryName(categoryId.value);
 });
 
 // Combine products and promotional spots for the grid
 const productGridItems = computed(() => {
-  const items = [];
-  const promoSpots = productStore.promotionalSpots;
-  
+  const items: any[] = [];
+  const promoSpots = productStore.promotionalSpots || [];
+
   // Add products and promotional spots to the grid
   products.value.forEach((product, index) => {
     // Add the product
     items.push({
       type: 'product',
       data: product,
-      id: product.id
+      id: product.id,
     });
-    
+
     // Check if we need to insert a promotional spot after this product
-    const promoSpot = promoSpots.find(spot => spot.position === index + 1);
+    const promoSpot = promoSpots.find((spot) => spot.position === index + 1);
     if (promoSpot) {
       items.push({
         type: 'promo',
-        data: promoSpot
+        data: promoSpot,
       });
     }
   });
-  
+
   return items;
 });
 
 // Set page metadata
 useHead({
+  // Let Nuxt auto-import handle this
   title: `${categoryName.value} - Fashion Store`,
   meta: [
-    { name: 'description', content: `Shop our collection of ${categoryName.value} at Fashion Store.` }
-  ]
+    {
+      name: 'description',
+      content: `Shop our collection of ${categoryName.value} at Fashion Store.`,
+    },
+  ],
 });
 </script>
-
-<!-- Category page now uses global CSS classes -->
-<!-- All styles are moved to assets/css/pages/category.css -->

@@ -28,6 +28,7 @@ assets/css/
 ## CSS Files Explained
 
 ### 1. `main.css` - Foundation
+
 - CSS custom properties (variables)
 - Global reset and base styles
 - Container and grid system
@@ -36,6 +37,7 @@ assets/css/
 - Responsive breakpoints
 
 ### 2. `global.css` - Shared Patterns
+
 - Reusable component patterns (cards, grids, sections)
 - Common UI patterns (dropdowns, forms, navigation)
 - Status indicators and feedback styles
@@ -43,13 +45,17 @@ assets/css/
 - Aspect ratio utilities
 
 ### 3. Component Files
+
 Each component has its own CSS file containing:
+
 - Component-specific styles
 - Component states and variations
 - Responsive behavior for that component
 
 ### 4. Page Files
+
 Page-specific styles for layouts and patterns unique to specific pages:
+
 - Hero sections
 - Page-specific grids
 - Custom layouts
@@ -57,21 +63,25 @@ Page-specific styles for layouts and patterns unique to specific pages:
 ## Benefits of This Organization
 
 ### ✅ **Maintainability**
+
 - Styles are organized by component/purpose
 - Easy to locate and modify specific styles
 - Clear separation of concerns
 
 ### ✅ **Reusability**
+
 - Common patterns in `global.css` can be reused
 - Consistent naming conventions
 - Modular approach reduces duplication
 
 ### ✅ **Performance**
+
 - CSS is loaded once globally
 - No runtime style injection
 - Better caching and optimization
 
 ### ✅ **Scalability**
+
 - Easy to add new components without style conflicts
 - Clear conventions for new team members
 - Consistent architecture as project grows
@@ -79,31 +89,37 @@ Page-specific styles for layouts and patterns unique to specific pages:
 ## CSS Class Naming Conventions
 
 ### Component Classes
+
 - Use descriptive, semantic names: `.product-card`, `.hero-section`
 - Include component context: `.footer-content`, `.nav-list`
 
 ### State Classes
+
 - Use modifiers: `.active`, `.disabled`, `.selected`
 - Combine with components: `.thumbnail.active`
 
 ### Utility Classes
+
 - Keep utility classes in `main.css`
 - Use consistent naming: `.text-center`, `.mb-2`, `.d-flex`
 
 ## How to Add New Styles
 
 ### For New Components
+
 1. Create a new file in `assets/css/components/`
 2. Add the file to `nuxt.config.ts` CSS array
 3. Use semantic class names
 4. Include responsive behavior
 
 ### For New Pages
+
 1. Create a new file in `assets/css/pages/`
 2. Add the file to `nuxt.config.ts` CSS array
 3. Focus on page-specific layouts and patterns
 
 ### For Shared Patterns
+
 - Add reusable patterns to `global.css`
 - Consider if it belongs in a component file instead
 - Follow existing naming conventions
@@ -111,6 +127,7 @@ Page-specific styles for layouts and patterns unique to specific pages:
 ## Migration Benefits
 
 ### Before (Problems with Inline/Scoped Styles)
+
 - ❌ Styles scattered across many component files
 - ❌ Difficult to maintain consistent design
 - ❌ Code duplication
@@ -118,6 +135,7 @@ Page-specific styles for layouts and patterns unique to specific pages:
 - ❌ Runtime style injection overhead
 
 ### After (Organized CSS Structure)
+
 - ✅ Centralized, organized CSS files
 - ✅ Easy to maintain and update
 - ✅ Consistent design patterns
@@ -139,6 +157,7 @@ border-radius: var(--border-radius-sm);
 ## Responsive Design
 
 All responsive behavior is handled through CSS media queries:
+
 - Mobile-first approach
 - Consistent breakpoints across all files
 - Component-specific responsive behavior
