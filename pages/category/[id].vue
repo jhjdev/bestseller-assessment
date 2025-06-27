@@ -40,7 +40,7 @@ const categoryId = computed(() => route.params.id as string);
 // Filter products by category ID
 const products = computed(() => {
   return productStore.products.filter(
-    (product) => product.categories && product.categories.includes(categoryId.value)
+    (product: Product) => product.categories && product.categories.includes(categoryId.value)
   );
 });
 
@@ -60,7 +60,7 @@ const productGridItems = computed(() => {
   const promoSpots = productStore.promotionalSpots || [];
 
   // Add products and promotional spots to the grid
-  products.value.forEach((product, index) => {
+  products.value.forEach((product: Product, index: number) => {
     // Add the product
     items.push({
       type: 'product',
@@ -69,7 +69,7 @@ const productGridItems = computed(() => {
     });
 
     // Check if we need to insert a promotional spot after this product
-    const promoSpot = promoSpots.find((spot) => spot.position === index + 1);
+    const promoSpot = promoSpots.find((spot: PromotionalSpot) => spot.position === index + 1);
     if (promoSpot) {
       items.push({
         type: 'promo',

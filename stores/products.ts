@@ -29,7 +29,7 @@ export const useProductStore = defineStore('products', {
 
   getters: {
     getProductById: (state) => (id: string | number) => {
-      return state.products.find((product) => product.id === id);
+      return state.products.find((product: Product) => product.id === id);
     },
     getCategoryById: (state) => (id: string) => {
       return state.categories[id];
@@ -46,7 +46,7 @@ export const useProductStore = defineStore('products', {
 
       const query = state.searchQuery.toLowerCase();
       return state.products.filter(
-        (product) =>
+        (product: Product) =>
           product.name?.en?.toLowerCase().includes(query) ||
           product.name?.dk?.toLowerCase().includes(query) ||
           product.brand?.toLowerCase().includes(query)
@@ -57,14 +57,14 @@ export const useProductStore = defineStore('products', {
         // Don't use searchResults getter, repeat the filter logic
         const query = state.searchQuery.toLowerCase();
         return state.products.filter(
-          (product) =>
+          (product: Product) =>
             product.name?.en?.toLowerCase().includes(query) ||
             product.name?.dk?.toLowerCase().includes(query) ||
             product.brand?.toLowerCase().includes(query)
         );
       } else if (state.selectedCategoryId) {
         return state.products.filter(
-          (product) =>
+          (product: Product) =>
             product.categories && product.categories.includes(state.selectedCategoryId || '')
         );
       }

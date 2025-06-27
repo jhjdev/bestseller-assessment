@@ -19,12 +19,14 @@
         <div class="category-grid">
           <NuxtLink
             v-for="category in mainCategories"
-            :key="category.id"
-            :to="`/category/${category.id}`"
-            class="category-card"
+            :key="(category as any).id"
+            :to="`/category/${(category as any).id}`"
+            class="category-link"
           >
-            <div class="category-name">
-              {{ category?.name?.en || 'Unknown Category' }}
+            <div class="category-card">
+              <div class="category-content">
+                {{ (category as any)?.name?.en || 'Unknown Category' }}
+              </div>
             </div>
           </NuxtLink>
         </div>
@@ -52,7 +54,9 @@ const productStore = useProductStore();
 const mainCategories = computed(() => {
   // Since there's no getAllCategories method, use the categories object directly
   const categoriesObj = productStore.categories || {};
-  return Object.values(categoriesObj).filter((category) => category?.id && category?.level === 1);
+  return Object.values(categoriesObj).filter(
+    (category: any) => category?.id && category?.level === 1
+  );
 });
 
 // Get a selection of featured products (first 8 products)

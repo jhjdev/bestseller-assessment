@@ -48,7 +48,7 @@ const colorCount = computed(() => {
   // Count unique colors including the main product color
   const colors = new Set([props.product.color]);
 
-  props.product.variant.forEach((variant) => {
+  props.product.variant.forEach((variant: any) => {
     if (variant.color) {
       colors.add(variant.color);
     }

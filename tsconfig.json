@@ -1,31 +1,8 @@
 {
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "types": ["node", "vitest/globals", "@vue/runtime-core", "@nuxt/types"],
-    "paths": {
-      "~/*": ["./"],
-      "@/*": ["./"],
-      "~~/*": ["./"],
-      "@@/*": ["./"]
-    },
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "strict": false,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "isolatedModules": false,
-    "verbatimModuleSyntax": false,
-    "allowJs": true,
-    "noEmit": true
-  },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
-  "exclude": ["node_modules", ".nuxt", ".output", "dist"]
+    "types": ["node", "vitest/globals"]
+  }
 }
