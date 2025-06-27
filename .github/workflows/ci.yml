@@ -114,13 +114,16 @@ jobs:
           ls -la .output/public/ || echo "No public folder found"
           echo "Server folder contents:"
           ls -la .output/server/ || echo "No server folder found"
+          echo "Size of build output:"
+          du -sh .output/
 
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: .output
+          path: .output/
           retention-days: 7
+          if-no-files-found: error
 
   # Security Scan
   security:
@@ -165,7 +168,7 @@ jobs:
     name: 🗄️ Database Integration Test
     runs-on: ubuntu-latest
     needs: lint
-    if: ${{ vars.ENABLE_DB_TESTS == 'true' }}
+    if: ${{ vars.ENABLE_DB_TESTS == 'true' && vars.ENABLE_DB_TESTS != '' }}
     
     steps:
       - name: 📥 Checkout code
@@ -201,7 +204,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
-          path: .
+          path: .output
+
+      - name: 🔍 Verify downloaded artifacts
+        run: |
+          echo "Downloaded artifact structure:"
+          ls -la .output/
+          echo "Public folder contents:"
+          ls -la .output/public/ || echo "No public folder found"
+          echo "Checking if required files exist:"
+          test -d .output/public && echo "✅ .output/public exists" || echo "❌ .output/public missing"
 
       - name: 🚀 Deploy to Netlify Preview
         uses: nwtgck/actions-netlify@v2.0
@@ -232,7 +244,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
-          path: .
+          path: .output
+
+      - name: 🔍 Verify downloaded artifacts
+        run: |
+          echo "Downloaded artifact structure:"
+          ls -la .output/
+          echo "Public folder contents:"
+          ls -la .output/public/ || echo "No public folder found"
+          echo "Checking if required files exist:"
+          test -d .output/public && echo "✅ .output/public exists" || echo "❌ .output/public missing"
 
       - name: 🌟 Deploy to Production
         uses: nwtgck/actions-netlify@v2.0
