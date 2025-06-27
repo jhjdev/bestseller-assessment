@@ -2,7 +2,9 @@ import { MongoClient } from 'mongodb';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import 'dotenv/config';
+
+// Environment variables are provided by GitHub Actions
+// No need to load .env file in CI environment
 
 // Handle ES module dirname issues
 const __filename = fileURLToPath(import.meta.url);
