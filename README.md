@@ -110,8 +110,8 @@ npm install
 cp .env.example .env
 
 # Edit .env and add your MongoDB credentials:
-# MONGODB_URI=your_mongodb_connection_string_here
-# MONGODB_DB_NAME=bestseller
+# MONGODB_URI=your_mongodb_connection_string_heredatabase
+# MONGODB_DB_NAME=your_database_name
 ```
 
 4. **Seed MongoDB (Optional):**
@@ -127,9 +127,9 @@ npm run seed
 npm run dev
 ```
 
-6. **Open your browser and navigate to `http://localhost:3000`**
+6. **Open your browser and navigate to `http://localhost:4000`**
 
-> 💡 **Note:** The application runs on port 3000 and automatically falls back to local JSON data if MongoDB is not configured.
+> 💡 **Note:** The application runs on port 4000 and automatically falls back to local JSON data if MongoDB is not configured.
 
 ### 🏗️ Building for Production
 
