@@ -1,20 +1,21 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { h } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 
-// Mock the NuxtLink component
-vi.mock('#app', () => ({
-  defineNuxtLink: () => ({
-    name: 'NuxtLink',
-    props: {
-      to: {
-        type: [String, Object],
-        default: ''
-      }
-    },
-    setup: (props, { slots }) => () => h('a', { href: props.to }, slots)
-  })
+// Mock the image placeholder composable
+vi.mock('~/composables/useImagePlaceholder', () => ({
+  useImagePlaceholder: () => ({
+    placeholderImage: '/images/placeholder.jpg',
+  }),
 }));
+
+// Mock NuxtLink
+const NuxtLinkStub = {
+  name: 'NuxtLink',
+  props: ['to'],
+  template: '<a :href="to"><slot /></a>',
+};
 
 describe('ProductCard Component', () => {
   it('renders correctly with all props', () => {
@@ -27,30 +28,30 @@ describe('ProductCard Component', () => {
       size: ['XS', 'S', 'L', 'M'],
       name: {
         dk: 'TEST PRODUCT',
-        en: 'TEST PRODUCT EN'
+        en: 'TEST PRODUCT EN',
       },
       images: ['https://example.com/image.jpg'],
-      categories: ['adults', 'women', 'women_clothes']
+      categories: ['adults', 'women', 'women_clothes'],
     };
 
     const wrapper = mount(ProductCard, {
       props: {
-        product
+        product,
       },
       global: {
         stubs: {
-          NuxtLink: true
-        }
-      }
+          NuxtLink: NuxtLinkStub,
+        },
+      },
     });
 
     // Check that the component renders the product information correctly
     expect(wrapper.text()).toContain('Test Brand');
     expect(wrapper.text()).toContain('TEST PRODUCT EN');
     expect(wrapper.find('img').attributes('src')).toBe('https://example.com/image.jpg');
-    
-    // Check price formatting
-    expect(wrapper.text()).toContain('DKK 299.95');
+
+    // Check price formatting (using non-breaking space as it appears in the actual output)
+    expect(wrapper.text()).toContain('DKK 299.95');
   });
 
   it('uses Danish name when English name is not available', () => {
@@ -63,21 +64,21 @@ describe('ProductCard Component', () => {
       size: ['XS', 'S', 'L', 'M'],
       name: {
         dk: 'TEST PRODUCT DK',
-        en: ''
+        en: '',
       },
       images: ['https://example.com/image.jpg'],
-      categories: ['adults', 'women', 'women_clothes']
+      categories: ['adults', 'women', 'women_clothes'],
     };
 
     const wrapper = mount(ProductCard, {
       props: {
-        product
+        product,
       },
       global: {
         stubs: {
-          NuxtLink: true
-        }
-      }
+          NuxtLink: NuxtLinkStub,
+        },
+      },
     });
 
     // Check that the component uses the Danish name when English is not available
@@ -94,7 +95,7 @@ describe('ProductCard Component', () => {
       size: ['S', 'M'],
       name: {
         dk: 'TEST PRODUCT',
-        en: 'TEST PRODUCT'
+        en: 'TEST PRODUCT',
       },
       images: ['https://example.com/image.jpg'],
       categories: ['adults', 'men', 'men_clothes'],
@@ -102,25 +103,25 @@ describe('ProductCard Component', () => {
         {
           stock: 3,
           color: 'Red',
-          size: ['XS', 'S']
+          size: ['XS', 'S'],
         },
         {
           stock: 2,
           color: 'Green',
-          size: ['M', 'L']
-        }
-      ]
+          size: ['M', 'L'],
+        },
+      ],
     };
 
     const wrapper = mount(ProductCard, {
       props: {
-        product
+        product,
       },
       global: {
         stubs: {
-          NuxtLink: true
-        }
-      }
+          NuxtLink: NuxtLinkStub,
+        },
+      },
     });
 
     // Check that the component shows the color options count
@@ -138,24 +139,26 @@ describe('ProductCard Component', () => {
       size: ['S'],
       name: {
         dk: 'NO IMAGE',
-        en: 'NO IMAGE'
+        en: 'NO IMAGE',
       },
       images: [], // Empty images array
-      categories: ['adults']
+      categories: ['adults'],
     };
 
     const wrapper = mount(ProductCard, {
       props: {
-        product
+        product,
       },
       global: {
         stubs: {
-          NuxtLink: true
-        }
-      }
+          NuxtLink: NuxtLinkStub,
+        },
+      },
     });
 
     // Check that the component uses a placeholder image
-    expect(wrapper.find('img').attributes('src')).toBe('/images/placeholder.jpg');
+    const imgElement = wrapper.find('img');
+    expect(imgElement.exists()).toBe(true);
+    expect(imgElement.attributes('src')).toBe('/images/placeholder.jpg');
   });
 });

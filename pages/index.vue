@@ -4,16 +4,10 @@
       <div class="container">
         <div class="hero-content">
           <h1 class="hero-title">Discover the Latest Fashion Trends</h1>
-          <p class="hero-subtitle">
-            Shop our collection of premium clothing and accessories
-          </p>
+          <p class="hero-subtitle">Shop our collection of premium clothing and accessories</p>
           <div class="hero-buttons">
-            <NuxtLink to="/category/women" class="btn btn-primary"
-              >Women's Collection</NuxtLink
-            >
-            <NuxtLink to="/category/men" class="btn btn-secondary"
-              >Men's Collection</NuxtLink
-            >
+            <NuxtLink to="/category/women" class="btn btn-primary">Women's Collection</NuxtLink>
+            <NuxtLink to="/category/men" class="btn btn-secondary">Men's Collection</NuxtLink>
           </div>
         </div>
       </div>
@@ -41,11 +35,7 @@
       <div class="container">
         <h2 class="section-title">Featured Products</h2>
         <div class="product-grid">
-          <ProductCard
-            v-for="product in featuredProducts"
-            :key="product.id"
-            :product="product"
-          />
+          <ProductCard v-for="product in featuredProducts" :key="product.id" :product="product" />
         </div>
       </div>
     </section>
@@ -53,15 +43,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'; // Import computed
-import { useProductStore } from '~/stores/product';
+import { computed } from 'vue';
+import { useProductStore } from '~/stores/products';
 
 const productStore = useProductStore();
 
-// Get main categories (level 1)
+// Update this to use the available categories object
 const mainCategories = computed(() => {
-  const categories = productStore.getAllCategories() || [];
-  return categories.filter((category) => category?.id && category?.level === 1);
+  // Since there's no getAllCategories method, use the categories object directly
+  const categoriesObj = productStore.categories || {};
+  return Object.values(categoriesObj).filter((category) => category?.id && category?.level === 1);
 });
 
 // Get a selection of featured products (first 8 products)
@@ -81,6 +72,3 @@ useHead({
   ],
 });
 </script>
-
-<!-- Home page now uses global CSS classes -->
-<!-- All styles are moved to assets/css/pages/home.css -->

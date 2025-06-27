@@ -1,25 +1,46 @@
 <template>
   <aside class="sidebar">
-    <div class="sidebar-content">
-      <h3 class="sidebar-title">Categories</h3>
-      <CategoryTree :category="rootCategory" />
+    <h2 class="sidebar-title">Categories</h2>
+    <div v-if="productStore.isLoading" class="loading">Loading categories...</div>
+    <div v-else>
+      <!-- Check if rootCategory exists and has subcategories -->
+      <div v-if="!rootCategory" class="error">No categories found</div>
+      <CategoryTree v-else-if="rootCategory" :category="rootCategory" />
     </div>
   </aside>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
-import { useProductStore } from '~/stores/product';
-import type { Category } from '~/types';
+<script setup>
+import { computed, onMounted } from 'vue';
+import { useProductStore } from '~/stores/products';
 
 const productStore = useProductStore();
 
-// Correctly set rootCategory to the root category object from data.json
+// Create a root category that contains all main categories
 const rootCategory = computed(() => {
-  // Return the full categories object which already has the structure we need
-  return productStore.categories;
+  if (Object.keys(productStore.categories).length === 0) return null;
+
+  // Check if root category exists
+  if (productStore.categories['root']) {
+    return productStore.categories['root'];
+  }
+
+  // If no root category exists, create one with main categories
+  const mainCategories = productStore.getMainCategories;
+
+  return {
+    id: 'root',
+    name: {
+      en: 'Categories',
+      dk: 'Kategorier',
+    },
+    level: 0,
+    categories: mainCategories,
+  };
+});
+
+// Ensure data is available on client-side
+onMounted(async () => {
+  await productStore.ensureHydrated();
 });
 </script>
-
-<!-- Sidebar component now uses global CSS classes -->
-<!-- All styles are moved to assets/css/components/sidebar.css -->

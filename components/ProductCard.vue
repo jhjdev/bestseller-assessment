@@ -2,7 +2,7 @@
   <div class="product-card">
     <NuxtLink :to="`/product/${product.id}`" class="product-link">
       <div class="product-image">
-        <img :src="mainImage" :alt="productName" loading="lazy">
+        <img :src="mainImage" :alt="productName" loading="lazy" />
       </div>
       <div class="product-info">
         <h3 class="product-brand">{{ product.brand }}</h3>
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { Product } from '~/types';
 import { useImagePlaceholder } from '~/composables/useImagePlaceholder';
 
@@ -28,8 +29,8 @@ const props = defineProps<{
 const { placeholderImage } = useImagePlaceholder();
 
 const mainImage = computed(() => {
-  return props.product.images && props.product.images.length > 0 
-    ? props.product.images[0] 
+  return props.product.images && props.product.images.length > 0
+    ? props.product.images[0]
     : placeholderImage;
 });
 
@@ -43,16 +44,16 @@ const hasVariants = computed(() => {
 
 const colorCount = computed(() => {
   if (!props.product.variant) return 1;
-  
+
   // Count unique colors including the main product color
   const colors = new Set([props.product.color]);
-  
-  props.product.variant.forEach(variant => {
+
+  props.product.variant.forEach((variant) => {
     if (variant.color) {
       colors.add(variant.color);
     }
   });
-  
+
   return colors.size;
 });
 
@@ -60,7 +61,7 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'DKK',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
   }).format(price);
 };
 </script>

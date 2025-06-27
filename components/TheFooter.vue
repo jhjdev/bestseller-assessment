@@ -6,7 +6,7 @@
           <h3 class="footer-title">Fashion Store</h3>
           <p>Your one-stop destination for the latest fashion trends and styles.</p>
         </div>
-        
+
         <div class="footer-section">
           <h3 class="footer-title">Quick Links</h3>
           <ul class="footer-links">
@@ -16,7 +16,7 @@
             <li><NuxtLink to="/category/kids">Kids</NuxtLink></li>
           </ul>
         </div>
-        
+
         <div class="footer-section">
           <h3 class="footer-title">Customer Service</h3>
           <ul class="footer-links">
@@ -26,7 +26,7 @@
             <li><NuxtLink to="/privacy">Privacy Policy</NuxtLink></li>
           </ul>
         </div>
-        
+
         <div class="footer-section">
           <h3 class="footer-title">Connect With Us</h3>
           <div class="social-links">
@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="footer-bottom">
         <p>&copy; {{ new Date().getFullYear() }} Fashion Store. All rights reserved.</p>
       </div>

@@ -4,7 +4,10 @@
       <h1>Shipping & Returns</h1>
       <div class="coming-soon-content">
         <p>Our shipping and returns information page is coming soon!</p>
-        <p>We're working on providing detailed information about our shipping policies and return process.</p>
+        <p>
+          We're working on providing detailed information about our shipping policies and return
+          process.
+        </p>
         <NuxtLink to="/" class="back-link">Back to Home</NuxtLink>
       </div>
     </div>

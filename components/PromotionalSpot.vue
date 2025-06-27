@@ -1,12 +1,12 @@
 <template>
   <div :class="['promotional-spot', `promo-${spot.type}`]">
     <a :href="spot.link" class="promo-link">
-      <img 
-        :src="spot.image.imageUrl" 
-        :alt="spot.imageAltText || spot.image.alt" 
+      <img
+        :src="spot.image.imageUrl"
+        :alt="spot.imageAltText || spot.image.alt"
         class="promo-image"
         loading="lazy"
-      >
+      />
     </a>
   </div>
 </template>

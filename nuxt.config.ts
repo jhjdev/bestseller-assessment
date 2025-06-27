@@ -1,6 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default {
+export default defineNuxtConfig({
+  // Add compatibility date as recommended
+  compatibilityDate: '2025-06-27',
+
   devtools: { enabled: true },
+
+  // SSR configuration
+  ssr: true,
+
   modules: ['@pinia/nuxt'],
   css: [
     '~/assets/css/main.css',
@@ -15,7 +22,7 @@ export default {
     '~/assets/css/pages/product-detail.css',
     '~/assets/css/pages/category.css',
     '~/assets/css/pages/search.css',
-    '~/assets/css/pages/coming-soon.css'
+    '~/assets/css/pages/coming-soon.css',
   ],
   app: {
     head: {
@@ -37,4 +44,28 @@ export default {
       ],
     },
   },
-}
+  serverHandlers: [{ route: '/api/data', handler: '~/server/api/data.ts' }],
+  runtimeConfig: {
+    mongodbUri: process.env.MONGODB_URI,
+    mongodbDbName: process.env.MONGODB_DB_NAME,
+    public: {
+      // Public config here if needed
+    },
+  },
+
+  // Nitro configuration for better performance
+  nitro: {
+    compressPublicAssets: true,
+  },
+
+  // Route rules for caching
+  routeRules: {
+    // Homepage and category pages are cached for 1 hour
+    '/': { headers: { 'Cache-Control': 's-maxage=3600' } },
+    '/category/**': { headers: { 'Cache-Control': 's-maxage=3600' } },
+    // Product pages are cached for 30 minutes
+    '/product/**': { headers: { 'Cache-Control': 's-maxage=1800' } },
+    // API endpoints are cached for 5 minutes
+    '/api/**': { headers: { 'Cache-Control': 's-maxage=300' } },
+  },
+});
