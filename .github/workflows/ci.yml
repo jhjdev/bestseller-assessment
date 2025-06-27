@@ -102,26 +102,34 @@ jobs:
         run: npm ci
 
       - name: 🏗️ Generate static site
-        run: npm run generate
+        run: |
+          echo "Starting static site generation..."
+          npm run generate
         env:
           NODE_ENV: production
 
-      - name: 🔍 Verify build output
+      - name: 🔍 Verify build output exists
         run: |
+          echo "=== Build Output Verification ==="
+          echo "Current directory contents:"
+          ls -la
+          echo "Checking if .output exists:"
+          test -d .output && echo "✅ .output directory exists" || echo "❌ .output directory missing"
           echo "Build output structure:"
-          ls -la .output/
+          ls -la .output/ || echo "❌ .output directory is empty or missing"
           echo "Public folder contents:"
-          ls -la .output/public/ || echo "No public folder found"
+          ls -la .output/public/ || echo "❌ No public folder found"
           echo "Server folder contents:"
-          ls -la .output/server/ || echo "No server folder found"
+          ls -la .output/server/ || echo "❌ No server folder found"
           echo "Size of build output:"
-          du -sh .output/
+          du -sh .output/ || echo "❌ Cannot calculate size"
+          echo "=== End Verification ==="
 
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: .output/
+          path: .output
           retention-days: 7
           if-no-files-found: error
 
@@ -159,6 +167,25 @@ jobs:
       - name: 🔍 Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
+  # Debug Variables (Always runs to show current state)
+  debug-variables:
+    name: 🔍 Debug Variables
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔍 Show all variables and conditions
+        run: |
+          echo "=== REPOSITORY VARIABLES ==="
+          echo "ENABLE_DB_TESTS: '${{ vars.ENABLE_DB_TESTS }}'"
+          echo "ENABLE_DB_TESTS type: $(echo '${{ vars.ENABLE_DB_TESTS }}' | wc -c) characters"
+          echo "Is empty: ${{ vars.ENABLE_DB_TESTS == '' }}"
+          echo "Equals 'true': ${{ vars.ENABLE_DB_TESTS == 'true' }}"
+          echo "=== GITHUB CONTEXT ==="
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "=== DATABASE TEST WILL RUN: ${{ vars.ENABLE_DB_TESTS == 'true' }} ==="
+
   # Database Testing (Optional)
   # To enable: 
   #   1. Go to Repository Settings > Variables > Repository Variables
@@ -168,9 +195,14 @@ jobs:
     name: 🗄️ Database Integration Test
     runs-on: ubuntu-latest
     needs: lint
-    if: ${{ vars.ENABLE_DB_TESTS == 'true' && vars.ENABLE_DB_TESTS != '' }}
+    if: ${{ vars.ENABLE_DB_TESTS == 'true' }}
     
     steps:
+      - name: 🔍 Debug database test variables
+        run: |
+          echo "ENABLE_DB_TESTS value: '${{ vars.ENABLE_DB_TESTS }}'"
+          echo "Condition result: ${{ vars.ENABLE_DB_TESTS == 'true' }}"
+          
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
