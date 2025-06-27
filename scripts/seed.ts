@@ -33,7 +33,19 @@ async function seed() {
     console.error(`Error: File not found at ${dataPath}`);
     process.exit(1);
   }
-  const client = new MongoClient(MONGODB_URI);
+  // Configure MongoDB client with SSL options for CI environment
+  const client = new MongoClient(MONGODB_URI, {
+    tls: true,
+    tlsAllowInvalidCertificates: false,
+    tlsAllowInvalidHostnames: false,
+    retryWrites: true,
+    w: 'majority',
+    serverSelectionTimeoutMS: 30000,
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 30000,
+    maxPoolSize: 10,
+    minPoolSize: 1,
+  });
   try {
     // Read data from JSON file
     const fileContent = fs.readFileSync(dataPath, 'utf-8');
@@ -52,10 +64,28 @@ async function seed() {
     console.log(`Found categories structure in data file`);
     console.log(`Found ${jsonData.promotionalSpots.length} promotional spots in data file`);
 
-    // Connect to MongoDB
+    // Connect to MongoDB with retry mechanism
     console.log(`Connecting to MongoDB at ${MONGODB_URI.substring(0, 20)}...`);
-    await client.connect();
-    console.log('Connected to MongoDB');
+    
+    let retries = 3;
+    let connected = false;
+    
+    while (retries > 0 && !connected) {
+      try {
+        await client.connect();
+        connected = true;
+        console.log('✅ Connected to MongoDB successfully');
+      } catch (error) {
+        retries--;
+        console.log(`❌ Connection attempt failed. Retries left: ${retries}`);
+        if (retries > 0) {
+          console.log('Waiting 5 seconds before retry...');
+          await new Promise(resolve => setTimeout(resolve, 5000));
+        } else {
+          throw error;
+        }
+      }
+    }
 
     const db = client.db(MONGODB_DB_NAME);
     console.log(`Using database: ${MONGODB_DB_NAME}`);

@@ -245,6 +245,9 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          NODE_TLS_REJECT_UNAUTHORIZED: '1'
+          NODE_OPTIONS: '--max-old-space-size=4096'
+          DEBUG: 'mongodb:*'
 
   # Deploy Preview (for PRs)
   deploy-preview:
