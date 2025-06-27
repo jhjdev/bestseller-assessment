@@ -268,9 +268,9 @@ npm run test:coverage
 For full CI/CD functionality, configure these repository secrets:
 
 ```bash
-# MongoDB (optional)
-MONGODB_URI=mongodb_connection_string
-MONGODB_DB_NAME=bestseller
+# MongoDB (optional - for database integration tests)
+MONGODB_URI=your_mongodb_connection_string
+MONGODB_DB_NAME=your_database_name
 
 # Deployment (optional)
 NETLIFY_AUTH_TOKEN=your_token
@@ -278,6 +278,15 @@ NETLIFY_SITE_ID=your_site_id
 
 # Code Coverage (optional)
 CODECOV_TOKEN=your_token
+```
+
+### **Repository Variables**
+
+To enable optional CI features, configure these repository variables:
+
+```bash
+# Enable database integration tests (optional)
+ENABLE_DB_TESTS=true
 ```
 
 ### **Branch Protection**
