@@ -101,18 +101,25 @@ jobs:
       - name: 📥 Install dependencies
         run: npm ci
 
-      - name: 🏗️ Build application
-        run: npm run build
+      - name: 🏗️ Generate static site
+        run: npm run generate
         env:
           NODE_ENV: production
+
+      - name: 🔍 Verify build output
+        run: |
+          echo "Build output structure:"
+          ls -la .output/
+          echo "Public folder contents:"
+          ls -la .output/public/ || echo "No public folder found"
+          echo "Server folder contents:"
+          ls -la .output/server/ || echo "No server folder found"
 
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: |
-            .output
-            dist
+          path: .output
           retention-days: 7
 
   # Security Scan
@@ -150,7 +157,10 @@ jobs:
         uses: github/codeql-action/analyze@v3
 
   # Database Testing (Optional)
-  # To enable: Set repository variable ENABLE_DB_TESTS=true and add MongoDB secrets
+  # To enable: 
+  #   1. Go to Repository Settings > Variables > Repository Variables
+  #   2. Add ENABLE_DB_TESTS=true
+  #   3. Add secrets: MONGODB_URI and MONGODB_DB_NAME
   database-test:
     name: 🗄️ Database Integration Test
     runs-on: ubuntu-latest
@@ -191,6 +201,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
+          path: .
 
       - name: 🚀 Deploy to Netlify Preview
         uses: nwtgck/actions-netlify@v2.0
@@ -221,6 +232,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
+          path: .
 
       - name: 🌟 Deploy to Production
         uses: nwtgck/actions-netlify@v2.0
