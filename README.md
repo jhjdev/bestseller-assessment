@@ -110,7 +110,7 @@ npm install
 cp .env.example .env
 
 # Edit .env and add your MongoDB credentials:
-# MONGODB_URI=your_mongodb_connection_string_heredatabase
+# MONGODB_URI=your_mongodb_connection_string_here
 # MONGODB_DB_NAME=your_database_name
 ```
 
