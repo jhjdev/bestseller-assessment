@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals", "@vue/runtime-core"]
+  },
+  "include": ["../tests/**/*", "../types/**/*", "../stores/**/*", "../components/**/*"]
+}
