@@ -116,12 +116,21 @@ jobs:
           echo "Environment: $NODE_ENV"
           
           echo "Running npm run generate..."
-          npm run generate
+          set -e  # Exit on any error
+          npm run generate || {
+            echo "❌ npm run generate failed, trying fallback approach..."
+            echo "Trying npx nuxt generate directly..."
+            npx nuxt generate || {
+              echo "❌ Direct nuxt generate also failed, trying build + generate..."
+              npm run build
+              npx nuxt generate --preset=static
+            }
+          }
           
           echo "✅ Static site generation completed"
         env:
           NODE_ENV: production
-          MONGODB_URI: 'dummy://localhost:27017'
+          MONGODB_URI: 'mongodb://dummy:27017/dummy'
           MONGODB_DB_NAME: 'dummy'
 
       - name: 🔍 Verify build output exists
