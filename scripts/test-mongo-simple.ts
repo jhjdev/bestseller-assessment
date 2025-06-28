@@ -22,19 +22,34 @@ async function testConnection() {
 
     // Special handling for GitHub Actions environment
     if (process.env.GITHUB_ACTIONS === 'true') {
-      console.log('🔧 Configuring for GitHub Actions OpenSSL compatibility...');
+      console.log('🔧 Detected GitHub Actions environment...');
 
-      // Set Node.js environment variables to handle TLS issues
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      // Check if using local MongoDB (localhost) or Atlas
+      if (uri.includes('localhost')) {
+        console.log('🏠 Using local MongoDB - no TLS required');
+        clientOptions = {
+          serverSelectionTimeoutMS: 10000,
+          connectTimeoutMS: 10000,
+          maxPoolSize: 1,
+          minPoolSize: 0,
+          // Local MongoDB doesn't need TLS
+        };
+      } else {
+        console.log('☁️ Using Atlas - applying TLS compatibility workarounds');
+        // Set Node.js environment variables for Atlas compatibility
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-      // Use minimal driver options that work with Atlas
-      clientOptions = {
-        serverSelectionTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
-        maxPoolSize: 1,
-        minPoolSize: 0,
-        // Let MongoDB handle TLS automatically
-      };
+        clientOptions = {
+          serverSelectionTimeoutMS: 30000,
+          connectTimeoutMS: 30000,
+          maxPoolSize: 1,
+          minPoolSize: 0,
+          // Atlas TLS compatibility options
+          tls: true,
+          tlsAllowInvalidCertificates: true,
+          tlsAllowInvalidHostnames: true,
+        };
+      }
     }
 
     console.log(
