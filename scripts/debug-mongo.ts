@@ -39,34 +39,59 @@ async function debugConnection() {
     console.log('❌ Minimal connection failed:', error.message);
   }
 
-  // Test 2: Connection with TLS disabled (if possible)
-  console.log('\n=== TEST 2: Connection with explicit TLS settings ===');
+  // Test 2: Connection with GitHub Actions compatible TLS settings
+  console.log('\n=== TEST 2: GitHub Actions compatible TLS ===');
   try {
     const client = new MongoClient(uri, {
       tls: true,
-      tlsInsecure: true,
-      tlsAllowInvalidCertificates: true,
-      tlsAllowInvalidHostnames: true,
+      tlsAllowInvalidCertificates: false,
+      tlsAllowInvalidHostnames: false,
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
     });
     await client.connect();
-    console.log('✅ TLS permissive connection SUCCESS');
+    console.log('✅ GitHub Actions TLS connection SUCCESS');
     await client.close();
   } catch (error) {
-    console.log('❌ TLS permissive connection failed:', error.message);
+    console.log('❌ GitHub Actions TLS connection failed:', error.message);
   }
 
-  // Test 3: No TLS at all (will probably fail for Atlas but worth trying)
-  console.log('\n=== TEST 3: Force no TLS ===');
+  // Test 3: Connection with modified URI for GitHub Actions
+  console.log('\n=== TEST 3: Modified URI for CI ===');
   try {
-    const noTlsUri = uri.replace('mongodb+srv://', 'mongodb://').split('?')[0];
-    const client = new MongoClient(noTlsUri, {
-      tls: false,
+    // Add explicit query parameters for GitHub Actions environment
+    const ciUri = uri.includes('?') 
+      ? `${uri}&ssl=true&retryWrites=true&w=majority`
+      : `${uri}?ssl=true&retryWrites=true&w=majority`;
+    
+    const client = new MongoClient(ciUri, {
+      serverSelectionTimeoutMS: 15000,
+      connectTimeoutMS: 15000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
     });
     await client.connect();
-    console.log('✅ No TLS connection SUCCESS');
+    console.log('✅ CI-optimized connection SUCCESS');
     await client.close();
   } catch (error) {
-    console.log('❌ No TLS connection failed (expected):', error.message);
+    console.log('❌ CI-optimized connection failed:', error.message);
+  }
+
+  // Test 4: Standard Atlas connection with minimal options
+  console.log('\n=== TEST 4: Standard Atlas connection ===');
+  try {
+    const client = new MongoClient(uri, {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+    });
+    await client.connect();
+    const db = client.db(dbName);
+    const collections = await db.listCollections().toArray();
+    console.log('✅ Standard Atlas connection SUCCESS');
+    console.log('Available collections:', collections.map(c => c.name));
+    await client.close();
+  } catch (error) {
+    console.log('❌ Standard Atlas connection failed:', error.message);
   }
 
   console.log('\n=== DIAGNOSIS COMPLETE ===');

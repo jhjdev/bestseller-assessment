@@ -290,8 +290,8 @@ EOF
       - name: 📥 Install dependencies
         run: npm ci
 
-      - name: 🗄️ Diagnose MongoDB connection
-        run: npx tsx scripts/debug-mongo.ts
+      - name: 🗄️ Test MongoDB connection
+        run: npx tsx scripts/test-mongo-simple.ts
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
