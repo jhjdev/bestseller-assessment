@@ -80,12 +80,22 @@ async function seed() {
       // Network settings
       family: 4, // Force IPv4
 
-      // MongoDB Atlas compatible settings - let Atlas handle TLS
+      // MongoDB Atlas compatible settings
       retryReads: true,
       retryWrites: true,
+
+      // TLS settings for CI environment - use only the most compatible options
+      tls: true, // Enable TLS
+      tlsInsecure: true, // Allow insecure connections in CI environment
     };
 
-    console.log('Applied enhanced CI-specific MongoDB settings');
+    // Ensure the connection string has minimal, compatible parameters
+    if (!connectionUri.includes('retryWrites')) {
+      const separator = connectionUri.includes('?') ? '&' : '?';
+      connectionUri += `${separator}retryWrites=true`;
+    }
+
+    console.log('Applied enhanced CI-specific MongoDB settings with explicit SSL/TLS');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);
