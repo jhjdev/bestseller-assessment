@@ -66,10 +66,10 @@ async function seed() {
 
     // Connect to MongoDB with retry mechanism
     console.log(`Connecting to MongoDB at ${MONGODB_URI.substring(0, 20)}...`);
-    
+
     let retries = 3;
     let connected = false;
-    
+
     while (retries > 0 && !connected) {
       try {
         await client.connect();
@@ -80,7 +80,7 @@ async function seed() {
         console.log(`❌ Connection attempt failed. Retries left: ${retries}`);
         if (retries > 0) {
           console.log('Waiting 5 seconds before retry...');
-          await new Promise(resolve => setTimeout(resolve, 5000));
+          await new Promise((resolve) => setTimeout(resolve, 5000));
         } else {
           throw error;
         }
