@@ -33,13 +33,10 @@ async function seed() {
     console.error(`Error: File not found at ${dataPath}`);
     process.exit(1);
   }
-  // Configure MongoDB client with proper TLS options for CI environment
-  // Use tlsInsecure for maximum compatibility in GitHub Actions
-  const client = new MongoClient(MONGODB_URI, {
-    // TLS Configuration for CI environment compatibility
-    tls: true,
-    tlsInsecure: true, // Allow invalid certificates and hostnames for CI
-
+  // Configure MongoDB client for GitHub Actions compatibility
+  // Modify connection string for CI environment
+  let connectionUri = MONGODB_URI;
+  let mongoOptions: any = {
     // Connection settings
     retryWrites: true,
     writeConcern: { w: 'majority' },
@@ -53,7 +50,20 @@ async function seed() {
     maxPoolSize: 5,
     minPoolSize: 1,
     maxIdleTimeMS: 30000,
-  });
+  };
+
+  // GitHub Actions specific adjustments
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    console.log('Detected GitHub Actions - applying CI-specific settings');
+    
+    // Modify connection string to add CI-friendly parameters
+    const separator = connectionUri.includes('?') ? '&' : '?';
+    connectionUri += `${separator}ssl=true&tlsInsecure=true&tlsAllowInvalidHostnames=true&tlsAllowInvalidCertificates=true`;
+    
+    console.log('Modified connection string for CI compatibility');
+  }
+
+  const client = new MongoClient(connectionUri, mongoOptions);
   try {
     // Read data from JSON file
     const fileContent = fs.readFileSync(dataPath, 'utf-8');

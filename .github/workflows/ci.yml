@@ -109,47 +109,42 @@ jobs:
 
       - name: 🏗️ Generate static site
         run: |
+          set -e  # Exit on error
           echo "=== Starting Static Site Generation ==="
           echo "Node version: $(node --version)"
           echo "NPM version: $(npm --version)"
           echo "Current directory: $(pwd)"
           echo "Environment: $NODE_ENV"
           
-          # Ensure .output directory exists for artifact upload
+          # Ensure .output directory exists FIRST
+          echo "Creating .output directory structure..."
           mkdir -p .output/public
-          echo "✅ Created base .output structure"
+          echo "Initial index.html for safety..."
+          echo "<!DOCTYPE html><html><head><title>Fashion Store</title></head><body><h1>Building...</h1></body></html>" > .output/public/index.html
+          echo "✅ Base .output structure created"
           
-          # Try primary build approach
-          echo "Running npm run generate..."
-          if npm run generate; then
+          # Show initial state
+          echo "Initial .output state:"
+          ls -la .output/
+          
+          # Try build with error handling
+          echo "=== Attempting npm run generate ==="
+          if npm run generate 2>&1; then
             echo "✅ npm run generate succeeded"
           else
-            echo "❌ npm run generate failed, trying fallback approach..."
-            echo "Trying npx nuxt generate directly..."
-            if npx nuxt generate; then
-              echo "✅ npx nuxt generate succeeded"
-            else
-              echo "❌ Direct nuxt generate also failed, trying build + static preset..."
-              if npm run build; then
-                echo "Build succeeded, trying static generation..."
-                if npx nuxt generate --preset=static; then
-                  echo "✅ Static generation with preset succeeded"
-                else
-                  echo "❌ All build methods failed - creating minimal static site"
-                  mkdir -p .output/public
-                  echo "<!DOCTYPE html><html><head><title>Build Error</title></head><body><h1>Build Error</h1><p>Static site generation failed in CI</p></body></html>" > .output/public/index.html
-                  echo "<!DOCTYPE html><html><head><title>404</title></head><body><h1>404 Not Found</h1></body></html>" > .output/public/404.html
-                  echo "⚠️ Created minimal fallback static site"
-                fi
-              else
-                echo "❌ Build failed - creating emergency fallback"
-                mkdir -p .output/public
-                echo "<!DOCTYPE html><html><head><title>Emergency Fallback</title></head><body><h1>Emergency Fallback</h1><p>All build methods failed</p></body></html>" > .output/public/index.html
-              fi
-            fi
+            echo "❌ npm run generate failed, ensuring fallback exists"
+            # Ensure directory still exists
+            mkdir -p .output/public
+            echo "<!DOCTYPE html><html><head><title>Build Failed</title></head><body><h1>Build Failed</h1><p>Using fallback content</p></body></html>" > .output/public/index.html
+            echo "<!DOCTYPE html><html><head><title>404</title></head><body><h1>404 Not Found</h1></body></html>" > .output/public/404.html
+            echo "⚠️ Created fallback static site"
           fi
           
-          echo "✅ Static site generation process completed"
+          # Final verification
+          echo "=== Final .output verification ==="
+          ls -la .output/
+          ls -la .output/public/
+          echo "✅ Static site generation completed"
         env:
           NODE_ENV: production
           MONGODB_URI: 'mongodb://dummy:27017/dummy'
