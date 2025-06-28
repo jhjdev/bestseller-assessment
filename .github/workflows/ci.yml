@@ -118,22 +118,10 @@ jobs:
           mkdir -p .output/server
           
           # Create index.html manually
-          cat > .output/public/index.html << 'EOF'
-<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"><title>Fashion Store - Static Build</title></head>
-<body><h1>Welcome to Fashion Store</h1><p>This is a manually generated page.</p></body>
-</html>
-EOF
+          echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Fashion Store - Static Build</title></head><body><h1>Welcome to Fashion Store</h1><p>This is a manually generated page.</p></body></html>' > .output/public/index.html
           
           # Create 404.html manually
-          cat > .output/public/404.html << 'EOF'
-<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"><title>404 - Not Found</title></head>
-<body><h1>404 - Page Not Found</h1><p>The requested page was not found.</p></body>
-</html>
-EOF
+          echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>404 - Not Found</title></head><body><h1>404 - Page Not Found</h1><p>The requested page was not found.</p></body></html>' > .output/public/404.html
 
           echo "✅ Manual static site creation completed"
           ls -la .output/
