@@ -221,9 +221,12 @@ jobs:
         if: always()  # Always upload artifacts, even if previous steps failed
         with:
           name: build-files
-          path: .output
+          path: |
+            .output/
+            .output/**/*
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error
+          include-hidden-files: true
 
   # Security Scan
   security:
