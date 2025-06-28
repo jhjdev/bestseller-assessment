@@ -34,33 +34,58 @@ async function seed() {
     process.exit(1);
   }
   // Configure MongoDB client for GitHub Actions compatibility
-  // Modify connection string for CI environment
   let connectionUri = MONGODB_URI;
   let mongoOptions: any = {
-    // Connection settings
+    // Atlas-optimized connection settings
     retryWrites: true,
+    retryReads: true,
     writeConcern: { w: 'majority' },
 
-    // Extended timeouts for CI environment
-    serverSelectionTimeoutMS: 60000, // 60 seconds
-    connectTimeoutMS: 60000, // 60 seconds
-    socketTimeoutMS: 60000, // 60 seconds
+    // Generous timeouts for CI environment
+    serverSelectionTimeoutMS: 30000, // 30 seconds
+    connectTimeoutMS: 30000, // 30 seconds
+    socketTimeoutMS: 0, // No socket timeout - let Atlas handle it
 
-    // Connection pool settings
-    maxPoolSize: 5,
-    minPoolSize: 1,
+    // Minimal connection pool for CI
+    maxPoolSize: 3,
+    minPoolSize: 0,
     maxIdleTimeMS: 30000,
+
+    // Network stability options
+    heartbeatFrequencyMS: 10000,
   };
 
   // GitHub Actions specific adjustments
   if (process.env.GITHUB_ACTIONS === 'true') {
     console.log('Detected GitHub Actions - applying CI-specific settings');
 
-    // Modify connection string to add CI-friendly parameters
-    const separator = connectionUri.includes('?') ? '&' : '?';
-    connectionUri += `${separator}ssl=true&tlsInsecure=true`;
+    // Enhanced MongoDB options for CI environment
+    mongoOptions = {
+      ...mongoOptions,
+      // Extended timeouts for potentially slower CI networks
+      serverSelectionTimeoutMS: 120000, // 2 minutes
+      connectTimeoutMS: 120000, // 2 minutes
+      socketTimeoutMS: 120000, // 2 minutes
 
-    console.log('Modified connection string for CI compatibility');
+      // Improved connection pool for CI
+      maxPoolSize: 3, // Small pool for CI
+      minPoolSize: 1,
+
+      // Reduced keep-alive for CI environment
+      maxIdleTimeMS: 30000,
+
+      // Additional stability options
+      heartbeatFrequencyMS: 30000,
+
+      // Network settings
+      family: 4, // Force IPv4
+
+      // MongoDB Atlas compatible settings - let Atlas handle TLS
+      retryReads: true,
+      retryWrites: true,
+    };
+
+    console.log('Applied enhanced CI-specific MongoDB settings');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);

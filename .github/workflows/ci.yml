@@ -302,9 +302,7 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
-          NODE_TLS_REJECT_UNAUTHORIZED: '0'
-          NODE_OPTIONS: '--max-old-space-size=4096 --tls-cipher-list=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384'
-          OPENSSL_CONF: ''
+          NODE_OPTIONS: '--max-old-space-size=4096'
           NODE_ENV: 'test'
 
   # Deploy Preview (for PRs)
