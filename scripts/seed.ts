@@ -33,18 +33,32 @@ async function seed() {
     console.error(`Error: File not found at ${dataPath}`);
     process.exit(1);
   }
-  // Configure MongoDB client with SSL options for CI environment
+  // Configure MongoDB client with relaxed SSL options for CI environment
+  // GitHub Actions has different SSL/TLS setup than local environments
   const client = new MongoClient(MONGODB_URI, {
+    // TLS Configuration optimized for CI environments
     tls: true,
-    tlsAllowInvalidCertificates: false,
-    tlsAllowInvalidHostnames: false,
+    tlsAllowInvalidCertificates: true, // Allow for CI compatibility
+    tlsAllowInvalidHostnames: true, // Allow for CI compatibility
+    tlsInsecure: true, // Relaxed TLS for CI
+
+    // Connection settings
     retryWrites: true,
     w: 'majority',
-    serverSelectionTimeoutMS: 30000,
-    connectTimeoutMS: 30000,
-    socketTimeoutMS: 30000,
-    maxPoolSize: 10,
+
+    // Extended timeouts for CI environment
+    serverSelectionTimeoutMS: 60000, // 60 seconds
+    connectTimeoutMS: 60000, // 60 seconds
+    socketTimeoutMS: 60000, // 60 seconds
+
+    // Connection pool settings
+    maxPoolSize: 5,
     minPoolSize: 1,
+    maxIdleTimeMS: 30000,
+
+    // Additional options for Atlas compatibility
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
   try {
     // Read data from JSON file
