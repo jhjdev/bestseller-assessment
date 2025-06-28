@@ -55,19 +55,31 @@ async function seed() {
     heartbeatFrequencyMS: 10000,
   };
 
-  // GitHub Actions specific adjustments - use minimal configuration
+  // GitHub Actions specific adjustments - bypass TLS completely
   if (process.env.GITHUB_ACTIONS === 'true') {
-    console.log('Detected GitHub Actions - using minimal MongoDB configuration');
+    console.log('Detected GitHub Actions - bypassing TLS completely');
 
-    // Use absolutely minimal options for GitHub Actions
+    // Convert mongodb+srv to regular mongodb to bypass TLS
+    if (connectionUri.includes('mongodb+srv://')) {
+      const srvMatch = connectionUri.match(/mongodb\+srv:\/\/([^@]+)@([^/?]+)/);
+      if (srvMatch) {
+        const [, credentials, host] = srvMatch;
+        connectionUri = `mongodb://${credentials}@${host}:27017`;
+        console.log('Converted SRV URI to direct connection without TLS');
+      }
+    }
+
+    // Force no TLS
     mongoOptions = {
       serverSelectionTimeoutMS: 30000,
       connectTimeoutMS: 30000,
       maxPoolSize: 1,
       minPoolSize: 0,
+      tls: false,
+      ssl: false,
     };
 
-    console.log('Applied minimal MongoDB configuration for GitHub Actions');
+    console.log('Applied TLS bypass for GitHub Actions');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);

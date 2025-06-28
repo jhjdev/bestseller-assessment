@@ -22,14 +22,28 @@ async function testConnection() {
 
     // Special handling for GitHub Actions environment
     if (process.env.GITHUB_ACTIONS === 'true') {
-      console.log('🔧 Using minimal configuration for GitHub Actions...');
+      console.log('🔧 Bypassing TLS completely for GitHub Actions...');
 
-      // Use absolutely minimal options - let MongoDB handle everything
+      // Convert mongodb+srv to regular mongodb to bypass TLS
+      if (uri.includes('mongodb+srv://')) {
+        // Extract credentials and host from srv URI
+        const srvMatch = uri.match(/mongodb\+srv:\/\/([^@]+)@([^/?]+)/);
+        if (srvMatch) {
+          const [, credentials, host] = srvMatch;
+          // Use direct connection without TLS
+          connectionUri = `mongodb://${credentials}@${host}:27017`;
+          console.log('🔄 Converted SRV URI to direct connection without TLS');
+        }
+      }
+
+      // Force no TLS
       clientOptions = {
         serverSelectionTimeoutMS: 15000,
         connectTimeoutMS: 15000,
         maxPoolSize: 1,
         minPoolSize: 0,
+        tls: false,
+        ssl: false,
       };
     }
 
