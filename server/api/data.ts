@@ -148,12 +148,12 @@ export default defineEventHandler(async (event) => {
         path.join(process.cwd(), 'data', 'data.json'),
         path.join(__dirname, '../../data/data.json'),
         path.join(process.cwd(), '../../data/data.json'),
-        './data/data.json'
+        './data/data.json',
       ];
-      
+
       let dataFilePath = '';
       let jsonData = '';
-      
+
       for (const testPath of possiblePaths) {
         try {
           if (fs.existsSync(testPath)) {
@@ -167,11 +167,13 @@ export default defineEventHandler(async (event) => {
           continue;
         }
       }
-      
+
       if (!jsonData) {
-        throw new Error(`Could not find data.json in any of these paths: ${possiblePaths.join(', ')}`);
+        throw new Error(
+          `Could not find data.json in any of these paths: ${possiblePaths.join(', ')}`
+        );
       }
-      
+
       const parsedData = JSON.parse(jsonData);
 
       // Transform the nested categories structure into a flat Record<string, Category>
