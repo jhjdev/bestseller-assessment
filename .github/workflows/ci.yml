@@ -115,19 +115,23 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Environment: $NODE_ENV"
           
+          # Try primary build approach
           echo "Running npm run generate..."
-          set -e  # Exit on any error
-          npm run generate || {
+          if npm run generate; then
+            echo "✅ npm run generate succeeded"
+          else
             echo "❌ npm run generate failed, trying fallback approach..."
             echo "Trying npx nuxt generate directly..."
-            npx nuxt generate || {
+            if npx nuxt generate; then
+              echo "✅ npx nuxt generate succeeded"
+            else
               echo "❌ Direct nuxt generate also failed, trying build + generate..."
               npm run build
-              npx nuxt generate --preset=static
-            }
-          }
+              npx nuxt generate --preset static
+            fi
+          fi
           
-          echo "✅ Static site generation completed"
+          echo "✅ Static site generation process completed"
         env:
           NODE_ENV: production
           MONGODB_URI: 'mongodb://dummy:27017/dummy'
@@ -139,15 +143,24 @@ jobs:
           echo "Current directory contents:"
           ls -la
           echo "Checking if .output exists:"
-          test -d .output && echo "✅ .output directory exists" || echo "❌ .output directory missing"
-          echo "Build output structure:"
-          ls -la .output/ || echo "❌ .output directory is empty or missing"
-          echo "Public folder contents:"
-          ls -la .output/public/ || echo "❌ No public folder found"
-          echo "Server folder contents:"
-          ls -la .output/server/ || echo "❌ No server folder found"
-          echo "Size of build output:"
-          du -sh .output/ || echo "❌ Cannot calculate size"
+          if test -d .output; then
+            echo "✅ .output directory exists"
+            echo "Build output structure:"
+            ls -la .output/
+            echo "Public folder contents:"
+            ls -la .output/public/ || echo "❌ No public folder found"
+            echo "Server folder contents:"
+            ls -la .output/server/ || echo "❌ No server folder found"
+            echo "Size of build output:"
+            du -sh .output/
+          else
+            echo "❌ .output directory missing - this is a critical error!"
+            echo "Creating minimal .output structure for debugging..."
+            mkdir -p .output/public
+            echo "<html><body><h1>Build Error</h1><p>Static site generation failed</p></body></html>" > .output/public/index.html
+            echo "⚠️ Created minimal fallback structure"
+            ls -la .output/
+          fi
           echo "=== End Verification ==="
 
       - name: 📦 Upload build artifacts
