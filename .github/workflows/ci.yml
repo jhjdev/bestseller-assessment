@@ -302,6 +302,7 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          GITHUB_ACTIONS: 'true'  # Trigger CI-specific TLS configuration
           NODE_OPTIONS: '--max-old-space-size=4096'
           NODE_ENV: 'test'
 
