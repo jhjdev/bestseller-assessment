@@ -44,7 +44,7 @@ async function seed() {
 
     // Connection settings
     retryWrites: true,
-    w: 'majority',
+    writeConcern: { w: 'majority' },
 
     // Extended timeouts for CI environment
     serverSelectionTimeoutMS: 60000, // 60 seconds
@@ -55,10 +55,6 @@ async function seed() {
     maxPoolSize: 5,
     minPoolSize: 1,
     maxIdleTimeMS: 30000,
-
-    // Additional options for Atlas compatibility
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   });
   try {
     // Read data from JSON file
