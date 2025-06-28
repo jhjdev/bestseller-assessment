@@ -55,11 +55,11 @@ async function seed() {
   // GitHub Actions specific adjustments
   if (process.env.GITHUB_ACTIONS === 'true') {
     console.log('Detected GitHub Actions - applying CI-specific settings');
-    
+
     // Modify connection string to add CI-friendly parameters
     const separator = connectionUri.includes('?') ? '&' : '?';
     connectionUri += `${separator}ssl=true&tlsInsecure=true&tlsAllowInvalidHostnames=true&tlsAllowInvalidCertificates=true`;
-    
+
     console.log('Modified connection string for CI compatibility');
   }
 
