@@ -297,8 +297,8 @@ jobs:
       - name: 📥 Install dependencies
         run: npm ci
 
-      - name: 🗄️ Test MongoDB connection (Simple)
-        run: npx tsx scripts/test-mongo.ts
+      - name: 🗄️ Diagnose MongoDB connection
+        run: npx tsx scripts/debug-mongo.ts
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
