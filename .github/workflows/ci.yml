@@ -110,23 +110,51 @@ jobs:
       - name: 🏗️ Generate Static Site
         run: |
           echo "=== Generating Static Site ==="
+          echo "Current directory: $(pwd)"
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
           
-          # Generate static site
-          npm run generate
+          echo "Pre-build directory contents:"
+          ls -la
           
-          echo "✅ Static generation completed"
-          ls -la .output/ || echo "No .output directory found"
+          echo "Environment variables:"
+          printenv | grep -E "(NODE_|MONGODB_)" || echo "No relevant env vars"
           
-          # If .output doesn't exist, create it manually
-          if [ ! -d ".output" ]; then
+          echo "Starting npm run generate..."
+          set -e  # Exit on any error
+          
+          # Capture both stdout and stderr
+          if npm run generate 2>&1; then
+            echo "✅ npm run generate completed successfully"
+          else
+            echo "❌ npm run generate failed with exit code $?"
+            echo "Attempting to continue with fallback..."
+          fi
+          
+          echo "Post-build directory contents:"
+          ls -la
+          
+          echo "Checking for .output directory:"
+          if [ -d ".output" ]; then
+            echo "✅ .output directory exists"
+            ls -la .output/
+            if [ -d ".output/public" ]; then
+              echo "✅ .output/public exists"
+              ls -la .output/public/
+            else
+              echo "❌ .output/public missing"
+            fi
+          else
+            echo "❌ .output directory does not exist"
             echo "Creating .output directory manually..."
             mkdir -p .output/public
             echo '<html><body><h1>Fallback Site</h1></body></html>' > .output/public/index.html
+            echo "✅ Created fallback .output structure"
           fi
           
-          echo "Final .output structure:"
+          echo "Final .output verification:"
           ls -la .output/
-          ls -la .output/public/ || echo "No public directory"
+          ls -la .output/public/
         env:
           NODE_ENV: production
           MONGODB_URI: 'mongodb://dummy:27017/dummy'
