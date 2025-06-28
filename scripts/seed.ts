@@ -59,11 +59,11 @@ async function seed() {
   if (process.env.GITHUB_ACTIONS === 'true') {
     console.log('Detected GitHub Actions - applying TLS workarounds for OpenSSL compatibility');
 
-    // Modify connection URI to include TLS parameters
+    // Modify connection URI to include basic parameters
     if (connectionUri.includes('?')) {
-      connectionUri = `${connectionUri}&ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+      connectionUri = `${connectionUri}&retryWrites=true&w=majority`;
     } else {
-      connectionUri = `${connectionUri}?ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+      connectionUri = `${connectionUri}?retryWrites=true&w=majority`;
     }
 
     // Permissive TLS options for GitHub Actions

@@ -24,14 +24,14 @@ async function testConnection() {
     if (process.env.GITHUB_ACTIONS === 'true') {
       console.log('🔧 Applying GitHub Actions TLS workarounds...');
 
-      // Modify connection string for GitHub Actions
+      // For GitHub Actions, use connection string parameters only
       if (uri.includes('?')) {
-        connectionUri = `${uri}&ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+        connectionUri = `${uri}&retryWrites=true&w=majority`;
       } else {
-        connectionUri = `${uri}?ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+        connectionUri = `${uri}?retryWrites=true&w=majority`;
       }
 
-      // Use permissive TLS options for GitHub Actions
+      // Use minimal TLS options for GitHub Actions
       clientOptions = {
         ...clientOptions,
         tls: true,
