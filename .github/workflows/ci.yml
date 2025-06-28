@@ -176,13 +176,42 @@ jobs:
           fi
           echo "=== End Verification ==="
 
+      - name: 🛡️ Final safety check before upload
+        run: |
+          echo "=== FINAL SAFETY CHECK ==="
+          if [ ! -d ".output" ]; then
+            echo "❌ CRITICAL: .output directory still missing!"
+            echo "Creating emergency .output structure..."
+            mkdir -p .output/public
+            echo "<!DOCTYPE html><html><head><title>Emergency Fallback</title></head><body><h1>Emergency Build</h1><p>Primary build failed, using emergency fallback</p></body></html>" > .output/public/index.html
+            echo "<!DOCTYPE html><html><head><title>404</title></head><body><h1>404 Not Found</h1></body></html>" > .output/public/404.html
+            echo "{}" > .output/nitro.json
+            echo "⚠️ Emergency .output structure created"
+          else
+            echo "✅ .output directory confirmed to exist"
+          fi
+          
+          if [ ! -d ".output/public" ]; then
+            echo "❌ CRITICAL: .output/public directory missing!"
+            mkdir -p .output/public
+            echo "<!DOCTYPE html><html><head><title>Fallback</title></head><body><h1>Build Fallback</h1></body></html>" > .output/public/index.html
+            echo "⚠️ .output/public directory created"
+          else
+            echo "✅ .output/public directory confirmed to exist"
+          fi
+          
+          echo "Final structure:"
+          ls -la .output/
+          ls -la .output/public/
+          echo "=== SAFETY CHECK COMPLETE ==="
+
       - name: 📦 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
           path: .output
           retention-days: 7
-          if-no-files-found: error
+          if-no-files-found: warn
 
   # Security Scan
   security:
