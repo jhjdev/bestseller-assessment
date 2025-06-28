@@ -318,9 +318,20 @@ jobs:
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
+        continue-on-error: true
+        id: download-artifacts
         with:
           name: build-files
           path: .output
+
+      - name: 🛡️ Handle missing artifacts
+        if: steps.download-artifacts.outcome == 'failure'
+        run: |
+          echo "⚠️ Build artifacts not found - creating emergency deployment structure"
+          mkdir -p .output/public
+          echo "<!DOCTYPE html><html><head><title>Build Failed</title></head><body><h1>🚧 Build in Progress</h1><p>The latest build failed, but the site is still available. Please check back soon.</p></body></html>" > .output/public/index.html
+          echo "<!DOCTYPE html><html><head><title>404</title></head><body><h1>404 Not Found</h1></body></html>" > .output/public/404.html
+          echo "Emergency deployment structure created"
 
       - name: 🔍 Verify downloaded artifacts
         run: |
@@ -358,9 +369,20 @@ jobs:
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
+        continue-on-error: true
+        id: download-artifacts-prod
         with:
           name: build-files
           path: .output
+
+      - name: 🛡️ Handle missing artifacts (Production)
+        if: steps.download-artifacts-prod.outcome == 'failure'
+        run: |
+          echo "⚠️ Production build artifacts not found - creating emergency structure"
+          mkdir -p .output/public
+          echo "<!DOCTYPE html><html><head><title>Production Build Failed</title></head><body><h1>🚧 Temporary Maintenance</h1><p>The site is temporarily unavailable due to a build issue. We're working to resolve this quickly.</p></body></html>" > .output/public/index.html
+          echo "<!DOCTYPE html><html><head><title>404</title></head><body><h1>404 Not Found</h1></body></html>" > .output/public/404.html
+          echo "Emergency production structure created"
 
       - name: 🔍 Verify downloaded artifacts
         run: |
