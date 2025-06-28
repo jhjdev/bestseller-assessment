@@ -8,7 +8,10 @@ console.log('GITHUB_REF:', process.env.GITHUB_REF || 'NOT SET');
 console.log('\nMongoDB Environment Variables:');
 console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
 console.log('MONGODB_URI length:', process.env.MONGODB_URI?.length || 0);
-console.log('MONGODB_URI starts with mongodb:', process.env.MONGODB_URI?.startsWith('mongodb') || false);
+console.log(
+  'MONGODB_URI starts with mongodb:',
+  process.env.MONGODB_URI?.startsWith('mongodb') || false
+);
 
 console.log('MONGODB_DB_NAME exists:', !!process.env.MONGODB_DB_NAME);
 console.log('MONGODB_DB_NAME value:', process.env.MONGODB_DB_NAME || 'NOT SET');
@@ -19,10 +22,12 @@ console.log('PORT:', process.env.PORT || 'NOT SET');
 
 console.log('\nAll Environment Variables containing "MONGO":');
 Object.keys(process.env)
-  .filter(key => key.toLowerCase().includes('mongo'))
-  .forEach(key => {
+  .filter((key) => key.toLowerCase().includes('mongo'))
+  .forEach((key) => {
     const value = process.env[key];
-    console.log(`${key}: ${value ? (value.length > 50 ? `[${value.length} chars]` : value) : 'NOT SET'}`);
+    console.log(
+      `${key}: ${value ? (value.length > 50 ? `[${value.length} chars]` : value) : 'NOT SET'}`
+    );
   });
 
 console.log('\n=== END DEBUG ===');

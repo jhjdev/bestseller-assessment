@@ -23,14 +23,14 @@ async function testConnection() {
     // Special handling for GitHub Actions environment
     if (process.env.GITHUB_ACTIONS === 'true') {
       console.log('🔧 Applying GitHub Actions TLS workarounds...');
-      
+
       // Modify connection string for GitHub Actions
       if (uri.includes('?')) {
         connectionUri = `${uri}&ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
       } else {
         connectionUri = `${uri}?ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
       }
-      
+
       // Use permissive TLS options for GitHub Actions
       clientOptions = {
         ...clientOptions,
@@ -42,7 +42,10 @@ async function testConnection() {
       };
     }
 
-    console.log('🔗 Connection URI modified for environment:', process.env.GITHUB_ACTIONS ? 'GitHub Actions' : 'Local');
+    console.log(
+      '🔗 Connection URI modified for environment:',
+      process.env.GITHUB_ACTIONS ? 'GitHub Actions' : 'Local'
+    );
     const client = new MongoClient(connectionUri, clientOptions);
 
     console.log('⏳ Connecting...');
