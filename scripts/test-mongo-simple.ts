@@ -22,23 +22,14 @@ async function testConnection() {
 
     // Special handling for GitHub Actions environment
     if (process.env.GITHUB_ACTIONS === 'true') {
-      console.log('🔧 Applying GitHub Actions TLS workarounds...');
+      console.log('🔧 Using minimal configuration for GitHub Actions...');
 
-      // For GitHub Actions, use connection string parameters only
-      if (uri.includes('?')) {
-        connectionUri = `${uri}&retryWrites=true&w=majority`;
-      } else {
-        connectionUri = `${uri}?retryWrites=true&w=majority`;
-      }
-
-      // Use minimal TLS options for GitHub Actions
+      // Use absolutely minimal options - let MongoDB handle everything
       clientOptions = {
-        ...clientOptions,
-        tls: true,
-        tlsAllowInvalidCertificates: true,
-        tlsAllowInvalidHostnames: true,
-        maxPoolSize: 5,
-        minPoolSize: 1,
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
+        maxPoolSize: 1,
+        minPoolSize: 0,
       };
     }
 

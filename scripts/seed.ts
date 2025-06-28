@@ -55,38 +55,19 @@ async function seed() {
     heartbeatFrequencyMS: 10000,
   };
 
-  // GitHub Actions specific adjustments - use TLS workarounds
+  // GitHub Actions specific adjustments - use minimal configuration
   if (process.env.GITHUB_ACTIONS === 'true') {
-    console.log('Detected GitHub Actions - applying TLS workarounds for OpenSSL compatibility');
+    console.log('Detected GitHub Actions - using minimal MongoDB configuration');
 
-    // Modify connection URI to include basic parameters
-    if (connectionUri.includes('?')) {
-      connectionUri = `${connectionUri}&retryWrites=true&w=majority`;
-    } else {
-      connectionUri = `${connectionUri}?retryWrites=true&w=majority`;
-    }
-
-    // Permissive TLS options for GitHub Actions
+    // Use absolutely minimal options for GitHub Actions
     mongoOptions = {
-      // Basic connection settings
-      retryWrites: true,
-      retryReads: true,
-
-      // TLS workarounds for GitHub Actions OpenSSL issues
-      tls: true,
-      tlsAllowInvalidCertificates: true,
-      tlsAllowInvalidHostnames: true,
-
-      // Reasonable timeouts for CI
-      serverSelectionTimeoutMS: 30000, // 30 seconds
-      connectTimeoutMS: 30000, // 30 seconds
-
-      // Basic connection pool
-      maxPoolSize: 5,
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      maxPoolSize: 1,
       minPoolSize: 0,
     };
 
-    console.log('Applied GitHub Actions TLS workarounds');
+    console.log('Applied minimal MongoDB configuration for GitHub Actions');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);
