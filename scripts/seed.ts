@@ -33,14 +33,12 @@ async function seed() {
     console.error(`Error: File not found at ${dataPath}`);
     process.exit(1);
   }
-  // Configure MongoDB client with relaxed SSL options for CI environment
-  // GitHub Actions has different SSL/TLS setup than local environments
+  // Configure MongoDB client with proper TLS options for CI environment
+  // Use tlsInsecure for maximum compatibility in GitHub Actions
   const client = new MongoClient(MONGODB_URI, {
-    // TLS Configuration optimized for CI environments
+    // TLS Configuration for CI environment compatibility
     tls: true,
-    tlsAllowInvalidCertificates: true, // Allow for CI compatibility
-    tlsAllowInvalidHostnames: true, // Allow for CI compatibility
-    tlsInsecure: true, // Relaxed TLS for CI
+    tlsInsecure: true, // Allow invalid certificates and hostnames for CI
 
     // Connection settings
     retryWrites: true,
