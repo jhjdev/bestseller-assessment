@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 async function testConnection() {
   const uri = process.env.MONGODB_URI;
