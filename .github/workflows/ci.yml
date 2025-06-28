@@ -127,7 +127,7 @@ jobs:
             else
               echo "❌ Direct nuxt generate also failed, trying build + generate..."
               npm run build
-              npx nuxt generate --preset static
+              npx nuxt generate --preset=static
             fi
           fi
           
