@@ -55,15 +55,27 @@ async function seed() {
     heartbeatFrequencyMS: 10000,
   };
 
-  // GitHub Actions specific adjustments - use MINIMAL, standard approach
+  // GitHub Actions specific adjustments - use TLS workarounds
   if (process.env.GITHUB_ACTIONS === 'true') {
-    console.log('Detected GitHub Actions - using standard MongoDB Atlas settings');
+    console.log('Detected GitHub Actions - applying TLS workarounds for OpenSSL compatibility');
 
-    // MINIMAL MongoDB options - let Atlas handle most of the configuration
+    // Modify connection URI to include TLS parameters
+    if (connectionUri.includes('?')) {
+      connectionUri = `${connectionUri}&ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+    } else {
+      connectionUri = `${connectionUri}?ssl=true&tlsInsecure=true&retryWrites=true&w=majority`;
+    }
+
+    // Permissive TLS options for GitHub Actions
     mongoOptions = {
       // Basic connection settings
       retryWrites: true,
       retryReads: true,
+
+      // TLS workarounds for GitHub Actions OpenSSL issues
+      tls: true,
+      tlsAllowInvalidCertificates: true,
+      tlsAllowInvalidHostnames: true,
 
       // Reasonable timeouts for CI
       serverSelectionTimeoutMS: 30000, // 30 seconds
@@ -74,7 +86,7 @@ async function seed() {
       minPoolSize: 0,
     };
 
-    console.log('Applied standard MongoDB Atlas settings for CI');
+    console.log('Applied GitHub Actions TLS workarounds');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);

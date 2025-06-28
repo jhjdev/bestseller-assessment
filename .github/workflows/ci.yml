@@ -278,6 +278,14 @@ jobs:
       - name: 📥 Install dependencies
         run: npm ci
 
+      - name: 🔍 Debug environment variables
+        run: npx tsx scripts/debug-env.ts
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          GITHUB_ACTIONS: 'true'
+          NODE_ENV: 'test'
+      
       - name: 🗄️ Test MongoDB connection
         run: npx tsx scripts/test-mongo-simple.ts
         env:
