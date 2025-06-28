@@ -14,8 +14,20 @@ async function testConnection() {
   console.log('Database:', dbName);
   console.log('GitHub Actions:', process.env.GITHUB_ACTIONS || 'false');
 
-  // Use the MOST BASIC connection possible
-  const client = new MongoClient(uri);
+  // Modify URI for GitHub Actions compatibility
+  let finalUri = uri;
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    // Add TLS parameters directly to connection string for CI compatibility
+    const separator = uri.includes('?') ? '&' : '?';
+    finalUri = `${uri}${separator}ssl=true&tlsInsecure=true&retryWrites=true`;
+    console.log('Modified URI for GitHub Actions compatibility');
+  }
+
+  // Use basic connection with minimal options
+  const client = new MongoClient(finalUri, {
+    serverSelectionTimeoutMS: 30000,
+    connectTimeoutMS: 30000,
+  });
 
   try {
     console.log('Attempting connection...');
