@@ -58,7 +58,7 @@ async function seed() {
 
     // Modify connection string to add CI-friendly parameters
     const separator = connectionUri.includes('?') ? '&' : '?';
-    connectionUri += `${separator}ssl=true&tlsInsecure=true&tlsAllowInvalidHostnames=true&tlsAllowInvalidCertificates=true`;
+    connectionUri += `${separator}ssl=true&tlsInsecure=true`;
 
     console.log('Modified connection string for CI compatibility');
   }
