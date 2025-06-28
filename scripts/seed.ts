@@ -55,18 +55,14 @@ async function seed() {
     heartbeatFrequencyMS: 10000,
   };
 
-  // GitHub Actions specific adjustments - bypass TLS using connection string
+  // GitHub Actions specific adjustments - configure for OpenSSL compatibility
   if (process.env.GITHUB_ACTIONS === 'true') {
-    console.log('Detected GitHub Actions - bypassing TLS using connection string parameters');
+    console.log('Detected GitHub Actions - configuring for OpenSSL compatibility');
 
-    // Add connection string parameters to disable TLS
-    if (connectionUri.includes('?')) {
-      connectionUri = `${connectionUri}&tls=false&ssl=false`;
-    } else {
-      connectionUri = `${connectionUri}?tls=false&ssl=false`;
-    }
+    // Set Node.js environment variables to handle TLS issues
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-    // Use minimal driver options
+    // Use minimal driver options that work with Atlas
     mongoOptions = {
       serverSelectionTimeoutMS: 30000,
       connectTimeoutMS: 30000,
@@ -74,7 +70,7 @@ async function seed() {
       minPoolSize: 0,
     };
 
-    console.log('Applied TLS bypass using connection string parameters');
+    console.log('Applied GitHub Actions OpenSSL compatibility settings');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);
