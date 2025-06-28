@@ -60,10 +60,10 @@ async function debugConnection() {
   console.log('\n=== TEST 3: Modified URI for CI ===');
   try {
     // Add explicit query parameters for GitHub Actions environment
-    const ciUri = uri.includes('?') 
+    const ciUri = uri.includes('?')
       ? `${uri}&ssl=true&retryWrites=true&w=majority`
       : `${uri}?ssl=true&retryWrites=true&w=majority`;
-    
+
     const client = new MongoClient(ciUri, {
       serverSelectionTimeoutMS: 15000,
       connectTimeoutMS: 15000,
@@ -88,7 +88,10 @@ async function debugConnection() {
     const db = client.db(dbName);
     const collections = await db.listCollections().toArray();
     console.log('✅ Standard Atlas connection SUCCESS');
-    console.log('Available collections:', collections.map(c => c.name));
+    console.log(
+      'Available collections:',
+      collections.map((c) => c.name)
+    );
     await client.close();
   } catch (error) {
     console.log('❌ Standard Atlas connection failed:', error.message);
