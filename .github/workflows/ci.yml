@@ -116,7 +116,8 @@ jobs:
           echo "Environment: $NODE_ENV"
           
           # Ensure .output directory exists for artifact upload
-          mkdir -p .output
+          mkdir -p .output/public
+          echo "✅ Created base .output structure"
           
           # Try primary build approach
           echo "Running npm run generate..."
