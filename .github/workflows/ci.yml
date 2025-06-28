@@ -297,13 +297,12 @@ jobs:
       - name: 📥 Install dependencies
         run: npm ci
 
-      - name: 🗄️ Test MongoDB connection
-        run: npm run seed
+      - name: 🗄️ Test MongoDB connection (Simple)
+        run: node scripts/test-mongo.js
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
-          GITHUB_ACTIONS: 'true'  # Trigger CI-specific TLS configuration
-          NODE_OPTIONS: '--max-old-space-size=4096'
+          GITHUB_ACTIONS: 'true'
           NODE_ENV: 'test'
 
   # Deploy Preview (for PRs)

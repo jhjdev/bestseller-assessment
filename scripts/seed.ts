@@ -55,47 +55,26 @@ async function seed() {
     heartbeatFrequencyMS: 10000,
   };
 
-  // GitHub Actions specific adjustments
+  // GitHub Actions specific adjustments - use MINIMAL, standard approach
   if (process.env.GITHUB_ACTIONS === 'true') {
-    console.log('Detected GitHub Actions - applying CI-specific settings');
+    console.log('Detected GitHub Actions - using standard MongoDB Atlas settings');
 
-    // Enhanced MongoDB options for CI environment
+    // MINIMAL MongoDB options - let Atlas handle most of the configuration
     mongoOptions = {
-      ...mongoOptions,
-      // Extended timeouts for potentially slower CI networks
-      serverSelectionTimeoutMS: 120000, // 2 minutes
-      connectTimeoutMS: 120000, // 2 minutes
-      socketTimeoutMS: 120000, // 2 minutes
-
-      // Improved connection pool for CI
-      maxPoolSize: 3, // Small pool for CI
-      minPoolSize: 1,
-
-      // Reduced keep-alive for CI environment
-      maxIdleTimeMS: 30000,
-
-      // Additional stability options
-      heartbeatFrequencyMS: 30000,
-
-      // Network settings
-      family: 4, // Force IPv4
-
-      // MongoDB Atlas compatible settings
-      retryReads: true,
+      // Basic connection settings
       retryWrites: true,
+      retryReads: true,
 
-      // TLS settings for CI environment - use only the most compatible options
-      tls: true, // Enable TLS
-      tlsInsecure: true, // Allow insecure connections in CI environment
+      // Reasonable timeouts for CI
+      serverSelectionTimeoutMS: 30000, // 30 seconds
+      connectTimeoutMS: 30000, // 30 seconds
+
+      // Basic connection pool
+      maxPoolSize: 5,
+      minPoolSize: 0,
     };
 
-    // Ensure the connection string has minimal, compatible parameters
-    if (!connectionUri.includes('retryWrites')) {
-      const separator = connectionUri.includes('?') ? '&' : '?';
-      connectionUri += `${separator}retryWrites=true`;
-    }
-
-    console.log('Applied enhanced CI-specific MongoDB settings with explicit SSL/TLS');
+    console.log('Applied standard MongoDB Atlas settings for CI');
   }
 
   const client = new MongoClient(connectionUri, mongoOptions);
