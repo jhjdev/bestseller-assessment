@@ -298,7 +298,7 @@ jobs:
         run: npm ci
 
       - name: 🗄️ Test MongoDB connection (Simple)
-        run: node scripts/test-mongo.js
+        run: npx tsx scripts/test-mongo.ts
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
