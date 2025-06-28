@@ -107,14 +107,14 @@ jobs:
           npx nuxt prepare
           echo "✅ Nuxt preparation completed"
 
-      - name: 🏗️ Build Application
+      - name: 🏗️ Generate Static Site
         run: |
-          echo "=== Building Application ==="
+          echo "=== Generating Static Site ==="
           
-          # Run the actual build
-          npm run build
+          # Generate static site
+          npm run generate
           
-          echo "✅ Build completed"
+          echo "✅ Static generation completed"
           ls -la .output/ || echo "No .output directory found"
           
           # If .output doesn't exist, create it manually
