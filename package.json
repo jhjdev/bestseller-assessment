@@ -48,7 +48,7 @@
     "nuxt": "^3.17.5",
     "pinia": "^3.0.3",
     "vitest": "^3.2.4",
-    "vue": "^3.5.17"
+    "vue": "^3.5.18"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
