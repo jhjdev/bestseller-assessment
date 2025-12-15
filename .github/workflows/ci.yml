@@ -12,7 +12,7 @@ permissions:
   actions: read
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '22'
 
 jobs:
   # Linting and Code Quality
@@ -50,7 +50,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [22]
     
     steps:
       - name: 📥 Checkout code
@@ -117,8 +117,8 @@ jobs:
           echo "Pre-build directory contents:"
           ls -la
           
-          echo "Environment variables:"
-          printenv | grep -E "(NODE_|MONGODB_)" || echo "No relevant env vars"
+          echo "Environment variables (non-sensitive):"
+          printenv | grep -E "(NODE_)" || echo "No relevant env vars"
           
           echo "Starting npm run generate..."
           set -e  # Exit on any error
