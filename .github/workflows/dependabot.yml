@@ -19,15 +19,18 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'npm'
 
       - name: 📥 Install dependencies
         run: npm ci
 
-      - name: 🧪 Run tests
+      - name: 🏗️ Prepare Nuxt types
+        run: npx nuxt prepare
+
+      - name: 🧪 Run CI checks
         run: npm run ci
 
       - name: 🤖 Enable auto-merge for Dependabot PRs
