@@ -51,7 +51,7 @@
     "vue": "^3.5.18"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@nuxt/eslint-config": "^1.11.0",
     "@nuxt/types": "^2.18.1",
