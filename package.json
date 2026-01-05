@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/jhjdev/bestseller-assessment#readme",
   "dependencies": {
-    "@nuxt/test-utils": "^3.21.0",
+    "@nuxt/test-utils": "^3.22.0",
     "@nuxtjs/dotenv": "^1.4.2",
     "@pinia/testing": "^1.0.3",
     "@vue/test-utils": "^2.4.6",
