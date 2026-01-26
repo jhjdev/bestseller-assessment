@@ -35,14 +35,14 @@ async function testConnection() {
           // Local MongoDB doesn't need TLS
         };
       } else {
-        console.log('☁️ Using Atlas - applying TLS compatibility workarounds');
-        // Set Node.js environment variables for Atlas compatibility
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+        console.log('☁️ Using Atlas with proper TLS configuration');
 
         clientOptions = {
           serverSelectionTimeoutMS: 30000,
           connectTimeoutMS: 30000,
           maxPoolSize: 1,
+          tls: true,
+          tlsAllowInvalidCertificates: false,
           minPoolSize: 0,
           // Atlas TLS compatibility options
           tls: true,
