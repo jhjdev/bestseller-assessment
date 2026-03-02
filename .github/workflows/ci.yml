@@ -217,7 +217,7 @@ jobs:
           echo "=== SAFETY CHECK COMPLETE ==="
 
       - name: 📦 Upload build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()  # Always upload artifacts, even if previous steps failed
         with:
           name: build-files
