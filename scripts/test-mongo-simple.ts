@@ -41,8 +41,6 @@ async function testConnection() {
           serverSelectionTimeoutMS: 30000,
           connectTimeoutMS: 30000,
           maxPoolSize: 1,
-          tls: true,
-          tlsAllowInvalidCertificates: false,
           minPoolSize: 0,
           // Atlas TLS compatibility options
           tls: true,
