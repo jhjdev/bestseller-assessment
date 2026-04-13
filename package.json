@@ -47,7 +47,7 @@
     "mongodb": "^6.21.0",
     "nuxt": "^4.3.1",
     "pinia": "^3.0.4",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.4",
     "vue": "^3.5.18"
   },
   "devDependencies": {
