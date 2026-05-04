@@ -42,7 +42,7 @@
     "@nuxt/test-utils": "^4.0.3",
     "@nuxtjs/dotenv": "^1.4.2",
     "@pinia/testing": "^1.0.3",
-    "@vue/test-utils": "^2.4.9",
+    "@vue/test-utils": "^2.4.10",
     "dotenv": "^17.4.2",
     "mongodb": "^7.2.0",
     "nuxt": "^4.4.2",
