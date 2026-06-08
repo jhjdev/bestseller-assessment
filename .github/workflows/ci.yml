@@ -381,7 +381,7 @@ jobs:
           test -d .output/public && echo "✅ .output/public exists" || echo "❌ .output/public missing"
 
       - name: 🚀 Deploy to Netlify Preview
-        uses: nwtgck/actions-netlify@v2.0
+        uses: nwtgck/actions-netlify@v4.0
         with:
           publish-dir: '.output/public'
           production-branch: main
@@ -432,7 +432,7 @@ jobs:
           test -d .output/public && echo "✅ .output/public exists" || echo "❌ .output/public missing"
 
       - name: 🌟 Deploy to Production
-        uses: nwtgck/actions-netlify@v2.0
+        uses: nwtgck/actions-netlify@v4.0
         with:
           publish-dir: '.output/public'
           production-deploy: true
