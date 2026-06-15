@@ -44,11 +44,11 @@
     "@pinia/testing": "^1.0.3",
     "@vue/test-utils": "^2.4.11",
     "dotenv": "^17.4.2",
-    "mongodb": "^7.2.0",
-    "nuxt": "^4.4.7",
+    "mongodb": "^7.3.0",
+    "nuxt": "^4.4.8",
     "pinia": "^3.0.4",
     "vitest": "^4.1.8",
-    "vue": "^3.5.35"
+    "vue": "^3.5.38"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
