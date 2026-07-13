@@ -44,7 +44,7 @@
     "@pinia/testing": "^1.0.3",
     "@vue/test-utils": "^2.4.11",
     "dotenv": "^17.4.2",
-    "mongodb": "^7.4.0",
+    "mongodb": "^7.5.0",
     "nuxt": "^4.4.8",
     "pinia": "^3.0.4",
     "vitest": "^4.1.10",
