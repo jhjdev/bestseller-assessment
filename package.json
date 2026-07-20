@@ -55,7 +55,7 @@
     "@eslint/js": "^9.39.2",
     "@nuxt/eslint-config": "^1.16.0",
     "@nuxt/types": "^2.18.1",
-    "@pinia/nuxt": "^0.11.2",
+    "@pinia/nuxt": "^1.0.1",
     "@pinia/testing": "^1.0.3",
     "@types/node": "^26.1.1",
     "@typescript-eslint/eslint-plugin": "^8.64.0",
